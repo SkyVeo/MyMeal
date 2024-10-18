@@ -1,26 +1,37 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Text, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import { colors } from "@/constants/colors";
+import { images } from "@/constants/images";
 
 export default function Index() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>MyMeal!</Text>
-      <StatusBar style="auto" />
-      <Link href="/meal" style={{ color: "blue" }}>
-        Go to Meal
-      </Link>
-    </View>
+    <SafeAreaView style={{ backgroundColor: colors.dark.background, height: "100%" }}>
+      <TouchableOpacity onPress={() => router.push("/meal")}>
+        <ScrollView contentContainerStyle={{ height: "100%" }}>
+          <View style={styles.container}>
+            <Image source={images.logo} style={styles.logo} resizeMode="contain" />
+          </View>
+        </ScrollView>
+      </TouchableOpacity>
+
+      <StatusBar backgroundColor={colors.dark.background} style="light" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    padding: 4,
   },
-  text: {
-    fontFamily: "Roboto-BlackItalic",
-  },
+  logo: {
+    width: 300,
+    height: 300,
+  }
 });

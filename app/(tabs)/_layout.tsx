@@ -1,7 +1,8 @@
 import { Tabs } from "expo-router";
 import { View, Text } from "react-native";
 import React from "react";
-import { Icons } from "@/constants/Icon";
+
+import { icons } from "@/constants/icons";
 
 interface TabIconProps {
   icon: any;
@@ -27,14 +28,7 @@ export default function TabsLayout() {
         options={{
           title: "Meal",
           headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              icon={Icons.meal}
-              color={color}
-              name="Meal"
-              focused={focused}
-            />
-          ),
+          tabBarIcon: ({ color, focused }) => <TabIcon icon={icons.meal} color={color} name="Meal" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -43,12 +37,7 @@ export default function TabsLayout() {
           title: "Shopping",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              icon={Icons.shopping}
-              color={color}
-              name="Shopping"
-              focused={focused}
-            />
+            <TabIcon icon={icons.shopping} color={color} name="Shopping" focused={focused} />
           ),
         }}
       />
