@@ -8,7 +8,18 @@ import { images } from "@/constants/images";
 
 export default function Index() {
   return (
-    <SafeAreaView style={{ backgroundColor: colors.dark.background, height: "100%" }}>
+    // <SafeAreaView style={{ backgroundColor: colors.dark.background, height: "100%" }}>
+    //   <TouchableOpacity onPress={() => router.push("/meal")}>
+    //     <ScrollView contentContainerStyle={{ height: "100%" }}>
+    //       <View style={styles.container}>
+    //         <Image source={images.logo} style={styles.logo} resizeMode="contain" />
+    //       </View>
+    //     </ScrollView>
+    //   </TouchableOpacity>
+
+    //   <StatusBar backgroundColor={colors.dark.background} style="light" />
+    // </SafeAreaView>
+    <View style={{ backgroundColor: colors.dark.background, flex: 1 }}>
       <TouchableOpacity onPress={() => router.push("/meal")}>
         <ScrollView contentContainerStyle={{ height: "100%" }}>
           <View style={styles.container}>
@@ -18,7 +29,7 @@ export default function Index() {
       </TouchableOpacity>
 
       <StatusBar backgroundColor={colors.dark.background} style="light" />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -33,5 +44,5 @@ const styles = StyleSheet.create({
   logo: {
     width: 300,
     height: 300,
-  }
+  },
 });

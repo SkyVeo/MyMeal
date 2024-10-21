@@ -1,12 +1,13 @@
 import { Tabs } from "expo-router";
 import { View, StyleSheet, Text } from "react-native";
-import React from "react";
+import React, { ReactElement } from "react";
 
 import { colors } from "@/constants/colors";
 import { icons } from "@/constants/icons";
+import Icon from "@/components/Icon";
 
 interface TabIconProps {
-  icon: any;
+  icon: ReactElement;
   color: string;
   name: string;
   focused: boolean;
@@ -14,9 +15,11 @@ interface TabIconProps {
 
 const TabIcon = ({ icon, color, name, focused }: TabIconProps) => {
   return (
-    <View style={styles.iconContainer}>
-      {React.cloneElement(icon, { size: 24, color })}
-      <Text style={{ fontFamily: focused ? "Roboto-Bold" : "Roboto-Regular", color: color }}>{name}</Text>
+    <View style={styles.tabIconContainer}>
+      <Icon icon={icon} size={24} style={{ color }} />
+      <Text style={{ ...styles.tabIconText, fontFamily: focused ? "Poppins-Bold" : "Poppins-Regular", color: color }}>
+        {name}
+      </Text>
     </View>
   );
 };
@@ -32,11 +35,11 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="meal"
+        name="index"
         options={{
           title: "Meal",
           headerShown: false,
-          tabBarIcon: ({ color, focused }) => <TabIcon icon={icons.meal} color={color} name="Meal" focused={focused} />,
+          tabBarIcon: ({ color, focused }) => <TabIcon icon={icons.meal} color={color} name="My Meals" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -45,7 +48,7 @@ export default function TabsLayout() {
           title: "Shopping",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon icon={icons.shopping} color={color} name="Shopping" focused={focused} />
+            <TabIcon icon={icons.shopping} color={color} name="Shopping List" focused={focused} />
           ),
         }}
       />
@@ -54,14 +57,17 @@ export default function TabsLayout() {
 }
 
 const styles = StyleSheet.create({
-  iconContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
   tabBar: {
     backgroundColor: colors.dark.background,
     borderTopWidth: 1,
     borderTopColor: colors.dark.border,
     height: 64,
+  },
+  tabIconContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tabIconText: {
+    fontSize: 12,
   },
 });
