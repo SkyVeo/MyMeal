@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontFamily: "Poppins-Medium",
-    color: "#CDCDE0",
+    color: colors.dark.secondaryText,
     fontSize: 14,
   },
   title: {

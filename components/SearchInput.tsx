@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import React from "react";
 
 import { colors } from "@/constants/colors";
-import { icons } from "@/constants/icons";
 import Icon from "./Icon";
 
 interface SearchInputProps {
@@ -33,7 +32,7 @@ export default function SearchInput({ placeholder, value, onChangeText }: Search
         style={styles.textInput}
         value={value}
         placeholder={placeholder}
-        placeholderTextColor="#CDCDE0"
+        placeholderTextColor={colors.dark.secondaryText}
         autoCapitalize="none"
         onChangeText={onChangeText}
         onFocus={() => setIsFocused(true)}
@@ -41,7 +40,7 @@ export default function SearchInput({ placeholder, value, onChangeText }: Search
       />
 
       <TouchableOpacity onPress={handleOnIconPress}>
-        <Icon icon={value ? icons.cancel : icons.search} size={20} style={styles.icon} />
+        {/* <Icon icon={value ? icons.cancel : icons.search} size={20} style={styles.icon} /> */}
       </TouchableOpacity>
     </View>
   );
@@ -51,6 +50,7 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 8,
   },
+  // TODO remove this style
   title: {
     fontSize: 16,
     color: "#f3f4f6",
@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginRight: 16,
-    borderWidth: 2,
+    borderWidth: 0,
     borderColor: colors.dark.border,
     width: "100%",
     height: 64,
-    paddingHorizontal: 16,
-    backgroundColor: "#1e1e2e",
-    borderRadius: 16,
+    paddingHorizontal: 24,
+    backgroundColor: colors.dark.tileBackground,
+    borderRadius: 50,
     alignItems: "center",
     flexDirection: "row",
   },
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   icon: {
-    color: colors.dark.text,
+    color: colors.dark.icon,
   },
 });
