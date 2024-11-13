@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, StyleProp, TextStyle, TouchableOpacity, StyleSheet, View } from "react-native";
+import { StyleProp, TextStyle, TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -10,7 +10,17 @@ export interface IconComponentProps {
   style?: StyleProp<TextStyle>;
 }
 
-export type IconKey = "meal" | "shopping" | "search" | "cancel" | "menu" | "arrowUp" | "arrowDown" | "sort" | "back" | "check";
+export type IconKey =
+  | "meal"
+  | "shopping"
+  | "search"
+  | "cancel"
+  | "menu"
+  | "arrowUp"
+  | "arrowDown"
+  | "sort"
+  | "back"
+  | "check" | "up";
 
 const icons: { [key in IconKey]: (props?: IconComponentProps) => React.ReactNode } = {
   meal: (props) => (
@@ -29,6 +39,7 @@ const icons: { [key in IconKey]: (props?: IconComponentProps) => React.ReactNode
     <Ionicons name="chevron-back-outline" size={props?.size} color={props?.color} style={props?.style} />
   ),
   check: (props) => <AntDesign name="check" size={props?.size} color={props?.color} style={props?.style} />,
+  up: (props) => <Ionicons name="chevron-up-outline" size={props?.size} color={props?.color} style={props?.style} />,
 };
 
 export interface IconProps extends IconComponentProps {

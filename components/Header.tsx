@@ -99,7 +99,7 @@ export default function Header({
 
       <HeaderTop searchValue={searchValue} setSearchValue={onChangeText} />
 
-      <View style={styles.bottomContainer}>
+      {/* <View style={styles.bottomContainer}>
         <PopupMenu
           style={[styles.bottomContainer, styles.containerElement]}
           items={sortOptions}
@@ -119,7 +119,7 @@ export default function Header({
           style={styles.containerElement}
           onPress={() => onChangeSortOrder?.(!isAscending)}
         />
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    // marginBottom: 16,
     height: 40,
   },
   bottomContainer: {

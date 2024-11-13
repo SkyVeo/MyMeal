@@ -1,5 +1,5 @@
-import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
-import React, { useState } from "react";
+import { View, Text, FlatList, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { colors } from "@/constants/colors";
@@ -7,8 +7,9 @@ import SearchInput from "@/components/SearchInput";
 import EmptyState from "@/components/EmptyState";
 import Icon from "@/components/Icon";
 import Header from "@/components/Header";
-import { HighlightText } from "@/components/HighlightText";
+import HighlightText from "@/components/HighlightText";
 import { Meal } from "@/classes/meal";
+import PopupMenu from "@/components/PopupMenu";
 
 const meals: Meal[] = [
   new Meal("Pizza prosciutto")
@@ -191,6 +192,34 @@ export default function Meals() {
     );
   };
 
+  const [showArrow, setShowArrow] = useState(false);
+  const flatListRef = useRef<FlatList>(null);
+  const arrowOpacity = useRef(new Animated.Value(100)).current;
+
+  const handleScroll = (event: any) => {
+    // const offsetY = event.nativeEvent.contentOffset.y;
+    const offsetY = event.nativeEvent.contentOffset.y;
+    // arrowOpacity.setValue(offsetY / 1000); // Fade in arrow as user scrolls down
+    if (offsetY > 100 && !showArrow) {
+      setShowArrow(true);
+      Animated.timing(arrowOpacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else if (offsetY <= 100 && showArrow) {
+      Animated.timing(arrowOpacity, {
+        toValue: 100,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => setShowArrow(false));
+    }
+  };
+
+  const scrollToTop = () => {
+    flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -201,26 +230,61 @@ export default function Meals() {
         <Header
           searchValue={query}
           onChangeText={setQuery}
-          sortText={sortConfig.option.label}
-          sortOptions={Object.values(sortOptions).map((option) => ({ caption: option.label, value: option }))}
-          selectedSortOptionIndex={Object.values(sortOptions).indexOf(sortConfig.option)}
-          onSetSortOption={(option) => setSortConfig({ ...sortConfig, option })}
-          isAscending={sortConfig.isAscending}
-          onChangeSortOrder={(isAscending) => setSortConfig({ ...sortConfig, isAscending })}
+          // sortText={sortConfig.option.label}
+          // sortOptions={Object.values(sortOptions).map((option) => ({ caption: option.label, value: option }))}
+          // selectedSortOptionIndex={Object.values(sortOptions).indexOf(sortConfig.option)}
+          // onSetSortOption={(option) => setSortConfig({ ...sortConfig, option })}
+          // isAscending={sortConfig.isAscending}
+          // onChangeSortOrder={(isAscending) => setSortConfig({ ...sortConfig, isAscending })}
         />
         <FlatList
+          ref={flatListRef}
           data={getFilteredMeals()}
           renderItem={renderMeal}
           ListEmptyComponent={<EmptyState title="No Meal Found" subtitle="Whoops!" />}
+          ListHeaderComponent={
+            <View style={styles.bottomContainer}>
+              <PopupMenu
+                style={[styles.bottomContainer, styles.containerElement]}
+                items={Object.values(sortOptions).map((option) => ({ caption: option.label, value: option }))}
+                selectedItemIndex={Object.values(sortOptions).indexOf(sortConfig.option)}
+                onPressItem={(item) => setSortConfig({ ...sortConfig, option: item.value })}
+              >
+                <Icon name="sort" size={20} color={BOTTOM_COLOR} />
+                <Text style={{ ...styles.bottomText, marginLeft: 5 }}>{sortConfig.option.label}</Text>
+              </PopupMenu>
+
+              <Text style={{ ...styles.bottomText, ...styles.containerElement, color: TOP_COLOR }}>|</Text>
+
+              <Icon
+                name={sortConfig.isAscending ? "arrowUp" : "arrowDown"}
+                size={20}
+                color={BOTTOM_COLOR}
+                style={styles.containerElement}
+                onPress={() => setSortConfig({ ...sortConfig, isAscending: !sortConfig.isAscending })}
+              />
+            </View>
+          }
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
         />
+        <Animated.View style={{ transform: [{ translateY: arrowOpacity }] }}>
+          <TouchableOpacity onPress={scrollToTop} style={styles.arrowContainer}>
+            <Icon name="up" size={30} color={TOP_COLOR} />
+          </TouchableOpacity>
+        </Animated.View>
       </View>
     </SafeAreaView>
   );
 }
 
+const TOP_COLOR = "#fff";
+const BOTTOM_COLOR = "#a0d6c8";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.dark.background,
   },
   backgroundContainer: {
     position: "absolute",
@@ -259,6 +323,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: colors.dark.border,
+    backgroundColor: "#f6f6f6",
   },
   mealTitle: {
     includeFontPadding: false,
@@ -274,5 +339,33 @@ const styles = StyleSheet.create({
   },
   highlighted: {
     backgroundColor: "yellow",
+  },
+  bottomContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    // backgroundColor: colors.dark.background,
+    paddingBottom: 10,
+    paddingHorizontal: 12,
+  },
+  bottomText: {
+    includeFontPadding: false,
+    textAlignVertical: "center",
+    color: BOTTOM_COLOR,
+    fontSize: 14,
+    fontFamily: "Poppins-Regular",
+  },
+  containerElement: {
+    padding: 5,
+  },
+  arrowContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    backgroundColor: BOTTOM_COLOR,
+    borderRadius: 25,
+    padding: 10,
   },
 });
