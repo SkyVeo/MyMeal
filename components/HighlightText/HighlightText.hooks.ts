@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 const escapeRegExp = (text: string) => {
     return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 };
@@ -23,11 +25,14 @@ export const useHighlightText = (
     caseSensitive: boolean
 ) => {
     if (!searchWords.length) {
-        return { parts: [text], regex: null };
+        return { textSegments: [text], highlightRegex: null };
     }
 
-    const regex = new RegExp(createRegexPattern(searchWords, ignoreTextSpaces), caseSensitive ? "g" : "gi");
-    const parts = text.split(regex);
+    const highlightRegex = useMemo(
+        () => new RegExp(createRegexPattern(searchWords, ignoreTextSpaces), caseSensitive ? "g" : "gi"),
+        [searchWords, ignoreTextSpaces, caseSensitive]
+    );
+    const textSegments = useMemo(() => text.split(highlightRegex), [text, highlightRegex]);
 
-    return { parts, regex };
+    return { textSegments, highlightRegex };
 };

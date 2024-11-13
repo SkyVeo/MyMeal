@@ -1,1 +1,1 @@
-export { default } from "./HighlightText";
+export { default, HighlightTextProps } from "./HighlightText";

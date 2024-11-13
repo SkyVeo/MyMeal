@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import HighlightText from "@/components/HighlightText";
 import { Meal } from "@/classes/meal";
 import PopupMenu from "@/components/PopupMenu";
+import SortMenu from "@/components/SortMenu";
 
 const meals: Meal[] = [
   new Meal("Pizza prosciutto")
@@ -121,41 +122,37 @@ const tieBreaker = (a: Meal, b: Meal, isAscending: boolean) => {
 
 export interface SortOption {
   label: string;
-  sortFunction: (a: Meal, b: Meal, isAscending: boolean) => number;
+  compare: (a: Meal, b: Meal, isAscending: boolean) => number;
 }
 
-export type SortOptions = "name" | "ingredientsCount" | "creationDate" | "duration";
-
-const sortOptions: { [key in SortOptions]: SortOption } = {
-  name: {
+const sortOptions: SortOption[] = [
+  {
     label: "Name",
-    sortFunction: tieBreaker,
+    compare: (a: Meal, b: Meal, isAscending: boolean) => tieBreaker(a, b, isAscending),
   },
-  ingredientsCount: {
+  {
     label: "Ingredients",
-    sortFunction: (a: Meal, b: Meal, isAscending: boolean) =>
+    compare: (a: Meal, b: Meal, isAscending: boolean) =>
       compare(a.ingredients.length, b.ingredients.length, (a, b) => a - b, isAscending) ||
       tieBreaker(a, b, isAscending),
   },
-  creationDate: {
+  {
     label: "Creation date",
-    sortFunction: (a: Meal, b: Meal, isAscending: boolean) =>
+    compare: (a: Meal, b: Meal, isAscending: boolean) =>
       compare(a.creationDate, b.creationDate, (a, b) => a.localeCompare(b), isAscending) ||
       tieBreaker(a, b, isAscending),
   },
-  duration: {
+  {
     label: "Duration",
-    sortFunction: (a: Meal, b: Meal, isAscending: boolean) =>
+    compare: (a: Meal, b: Meal, isAscending: boolean) =>
       compare(a.duration, b.duration, (a, b) => a - b, isAscending) || tieBreaker(a, b, isAscending),
   },
-};
+];
 
 export default function Meals() {
   const [query, setQuery] = useState("");
-  const [sortConfig, setSortConfig] = useState<{ option: SortOption; isAscending: boolean }>({
-    option: sortOptions.name,
-    isAscending: true,
-  });
+  const [sortOptionIndex, setSortOptionIndex] = useState(0);
+  const [isAscending, setIsAscending] = useState(true);
 
   const getSearchWords = () => query.split(" ").filter((word) => word.length > 0);
 
@@ -166,7 +163,7 @@ export default function Meals() {
           (word) => contains(item.title.replace(/\s+/g, ""), word) || contains(item.ingredients.join(""), word)
         )
       )
-      .sort((a, b) => sortConfig.option.sortFunction(a, b, sortConfig.isAscending));
+      .sort((a, b) => sortOptions[sortOptionIndex].compare(a, b, isAscending));
   };
 
   const contains = (text: string, searchString: string) => {
@@ -243,27 +240,34 @@ export default function Meals() {
           renderItem={renderMeal}
           ListEmptyComponent={<EmptyState title="No Meal Found" subtitle="Whoops!" />}
           ListHeaderComponent={
-            <View style={styles.bottomContainer}>
-              <PopupMenu
-                style={[styles.bottomContainer, styles.containerElement]}
-                items={Object.values(sortOptions).map((option) => ({ caption: option.label, value: option }))}
-                selectedItemIndex={Object.values(sortOptions).indexOf(sortConfig.option)}
-                onPressItem={(item) => setSortConfig({ ...sortConfig, option: item.value })}
-              >
-                <Icon name="sort" size={20} color={BOTTOM_COLOR} />
-                <Text style={{ ...styles.bottomText, marginLeft: 5 }}>{sortConfig.option.label}</Text>
-              </PopupMenu>
-
-              <Text style={{ ...styles.bottomText, ...styles.containerElement, color: TOP_COLOR }}>|</Text>
-
-              <Icon
-                name={sortConfig.isAscending ? "arrowUp" : "arrowDown"}
-                size={20}
-                color={BOTTOM_COLOR}
-                style={styles.containerElement}
-                onPress={() => setSortConfig({ ...sortConfig, isAscending: !sortConfig.isAscending })}
-              />
-            </View>
+            // <View style={styles.bottomContainer}>
+            //   <PopupMenu
+            //     // containerStyle={[styles.bottomContainer, styles.containerElement]}
+            //     items={Object.values(sortOptions).map((option) => ({ label: option.label, value: option }))}
+            //     selectedItemIndex={Object.values(sortOptions).indexOf(sortConfig.option)}
+            //     onPressItem={(item) => setSortConfig({ ...sortConfig, option: item.value })}
+            //   >
+            //     <View style={[styles.bottomContainer, styles.containerElement]}>
+            //       <Icon name="sort" size={20} color={BOTTOM_COLOR} />
+            //       <Text style={{ ...styles.bottomText, marginLeft: 5 }}>{sortConfig.option.label}</Text>
+            //     </View>
+            //   </PopupMenu>
+            //   <Text style={{ ...styles.bottomText, ...styles.containerElement, color: TOP_COLOR }}>|</Text>
+            //   <Icon
+            //     name={sortConfig.isAscending ? "arrowUp" : "arrowDown"}
+            //     size={20}
+            //     color={BOTTOM_COLOR}
+            //     style={styles.containerElement}
+            //     onPress={() => setSortConfig({ ...sortConfig, isAscending: !sortConfig.isAscending })}
+            //   />
+            // </View>
+            <SortMenu
+              sortOptions={sortOptions}
+              activeSortIndex={sortOptionIndex}
+              onChangeSortIndex={setSortOptionIndex}
+              isAscending={isAscending}
+              onToggleSortOrder={setIsAscending}
+            />
           }
           onScroll={handleScroll}
           scrollEventThrottle={16}

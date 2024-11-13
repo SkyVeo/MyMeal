@@ -11,25 +11,23 @@ import {
   Easing,
 } from "react-native";
 import React, { PropsWithChildren, useState, useRef } from "react";
-import Icon, { IconComponentProps } from "./Icon";
+import Icon from "../Icon/Icon";
 import { colors } from "@/constants/colors";
 
 export interface PopupMenuItem {
-  caption: string;
+  label: string;
   value?: any;
-  iconProps?: IconComponentProps;
   onPress?: () => void;
 }
 
 export interface PopupMenuProps {
-  style?: StyleProp<ViewStyle>;
   items?: PopupMenuItem[];
   selectedItemIndex?: number;
   onPressItem?: (item: PopupMenuItem) => void;
 }
 
 export default function PopupMenu(props: PropsWithChildren<PopupMenuProps>) {
-  const { style, items, selectedItemIndex, onPressItem, children } = props;
+  const { items, selectedItemIndex, onPressItem, children } = props;
 
   const [isVisible, setIsVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
@@ -69,7 +67,7 @@ export default function PopupMenu(props: PropsWithChildren<PopupMenuProps>) {
 
   return (
     <>
-      <TouchableOpacity ref={touchableRef} style={style} onPress={showMenu}>
+      <TouchableOpacity ref={touchableRef} onPress={showMenu}>
         {children}
       </TouchableOpacity>
       <Modal visible={isVisible} transparent animationType="fade">
@@ -87,7 +85,7 @@ export default function PopupMenu(props: PropsWithChildren<PopupMenuProps>) {
                   onPressItem?.(item);
                 }}
               >
-                <Text style={[styles.text, selectedItemIndex === index && styles.selected]}>{item.caption}</Text>
+                <Text style={[styles.text, selectedItemIndex === index && styles.selected]}>{item.label}</Text>
                 <Icon
                   style={[styles.icon, selectedItemIndex === index ? styles.selected : { color: "transparent" }]}
                   name="check"

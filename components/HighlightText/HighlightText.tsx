@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { Text, StyleSheet, StyleProp, TextStyle } from "react-native";
 import { useHighlightText } from "./HighlightText.hooks";
 
@@ -19,16 +18,16 @@ const HighlightText = ({
   ignoreTextSpaces = false,
   caseSensitive = false,
 }: HighlightTextProps) => {
-  const { parts, regex } = useMemo(
-    () => useHighlightText(text, searchWords, ignoreTextSpaces, caseSensitive),
-    [text, searchWords, ignoreTextSpaces, caseSensitive]
-  );
+  const { textSegments, highlightRegex } = useHighlightText(text, searchWords, ignoreTextSpaces, caseSensitive);
+
+  const getTextStyle = (segment: string) =>
+    highlightRegex && highlightRegex.test(segment) ? [styles.highlight, highlightStyle] : undefined;
 
   return (
     <Text style={textStyle}>
-      {parts.map((part: string, index: number) => (
-        <Text key={index} style={regex && regex.test(part) ? [styles.highlight, highlightStyle] : undefined}>
-          {part}
+      {textSegments.map((segment: string, index: number) => (
+        <Text key={index} style={getTextStyle(segment)}>
+          {segment}
         </Text>
       ))}
     </Text>
