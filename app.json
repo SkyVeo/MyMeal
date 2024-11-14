@@ -8,6 +8,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "backgroundColor" : "#309D81",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/mymeal-logo.png",
       "resizeMode": "contain",

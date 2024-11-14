@@ -2,17 +2,19 @@ import {
   Text,
   StyleProp,
   ViewStyle,
-  TouchableOpacity,
   Modal,
   SafeAreaView,
   StyleSheet,
   Dimensions,
   Animated,
   Easing,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import React, { PropsWithChildren, useState, useRef } from "react";
+import React, { PropsWithChildren, useState, useRef, useEffect } from "react";
 import Icon from "../Icon/Icon";
 import { colors } from "@/constants/colors";
+import { usePopupMenu } from "./PopupMenu.hooks";
 
 export interface PopupMenuItem {
   label: string;
@@ -20,61 +22,28 @@ export interface PopupMenuItem {
   onPress?: () => void;
 }
 
-export interface PopupMenuProps {
+export interface PopupMenuProps extends PropsWithChildren {
   items?: PopupMenuItem[];
   selectedItemIndex?: number;
   onPressItem?: (item: PopupMenuItem) => void;
 }
 
-export default function PopupMenu(props: PropsWithChildren<PopupMenuProps>) {
-  const { items, selectedItemIndex, onPressItem, children } = props;
-
-  const [isVisible, setIsVisible] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
-  const touchableRef = useRef<TouchableOpacity>(null);
-  const scale = useRef(new Animated.Value(0)).current;
-
-  const animatedStyle = {
-    opacity: scale.interpolate({ inputRange: [0, 1], outputRange: [0, 1] }),
-    transform: [{ translateY: scale.interpolate({ inputRange: [0, 1], outputRange: [-10, 0] }) }],
-    top: menuPosition.top,
-    left: menuPosition.left,
-  };
-
-  const resizeBox = (to: number) => {
-    to === 1 && setIsVisible(true);
-    Animated.timing(scale, {
-      toValue: to,
-      duration: 200,
-      useNativeDriver: true,
-      easing: Easing.out(Easing.ease),
-    }).start(() => to === 0 && setIsVisible(false));
-  };
-
-  const showMenu = () => {
-    touchableRef.current?.measure((fx, fy, width, height, px, py) => {
-      setMenuPosition({ top: py, left: px });
-      resizeBox(1);
-    });
-  };
-
-  const adjustMenuPosition = (menuWidth: number) => {
-    const screenWidth = Dimensions.get("window").width;
-    const offset = 10;
-    const left = Math.min(Math.max(offset, menuPosition.left), screenWidth - menuWidth - offset);
-    setMenuPosition((prevPosition) => ({ ...prevPosition, left }));
-  };
+export default function PopupMenu({ items, selectedItemIndex, onPressItem, children }: PopupMenuProps) {
+  const { animatedStyle, touchableRef, isVisible, menuPosition, adjustMenuPosition, showMenu, closeMenu } =
+    usePopupMenu();
 
   return (
     <>
       <TouchableOpacity ref={touchableRef} onPress={showMenu}>
         {children}
       </TouchableOpacity>
-      <Modal visible={isVisible} transparent animationType="fade">
-        <SafeAreaView style={{ flex: 1 }} onTouchStart={() => resizeBox(0)}>
+      <Modal visible={isVisible} transparent>
+        <SafeAreaView style={{ flex: 1 }} onTouchStart={closeMenu}>
           <Animated.View
-            onLayout={(event) => adjustMenuPosition(event.nativeEvent.layout.width)}
-            style={[styles.container, animatedStyle]}
+            onLayout={(event) =>
+              adjustMenuPosition(event.nativeEvent.layout.x, event.nativeEvent.layout.y, event.nativeEvent.layout.width)
+            }
+            style={[styles.container, animatedStyle, menuPosition]}
           >
             {items?.map((item, index) => (
               <TouchableOpacity
