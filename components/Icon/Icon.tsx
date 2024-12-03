@@ -1,8 +1,12 @@
-import React from "react";
 import { StyleProp, TextStyle, TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
+import Touchable from "@/components/Touchable";
 
 export interface IconComponentProps {
   size?: number;
@@ -21,7 +25,11 @@ export type IconKey =
   | "sort"
   | "back"
   | "check"
-  | "up";
+  | "up"
+  | "favorite"
+  | "favoriteBorder"
+  | "clock"
+  | "ingredient";
 
 const icons: { [key in IconKey]: (props: IconComponentProps) => React.ReactNode } = {
   meal: (props) => <MaterialCommunityIcons name="silverware-fork-knife" {...props} />,
@@ -35,18 +43,28 @@ const icons: { [key in IconKey]: (props: IconComponentProps) => React.ReactNode 
   back: (props) => <Ionicons name="chevron-back-outline" {...props} />,
   check: (props) => <AntDesign name="check" {...props} />,
   up: (props) => <Ionicons name="chevron-up-outline" {...props} />,
+  favorite: (props) => <MaterialIcons name="favorite" {...props} />,
+  favoriteBorder: (props) => <MaterialIcons name="favorite-border" {...props} />,
+  clock: (props) => <Feather name="clock" {...props} />,
+  ingredient: (props) => <FontAwesome6 name="carrot" {...props} />,
 };
 
 export interface IconProps extends IconComponentProps {
   name: IconKey;
+  highlightColor?: string;
+  hitSlop?: number;
   onPress?: () => void;
 }
 
-const Icon = ({ name, size, color, style, onPress }: IconProps) => {
+const Icon = ({ name, size, color, style, highlightColor, hitSlop, onPress }: IconProps) => {
   const icon = icons[name]({ size, color, style });
 
   if (onPress) {
-    return <TouchableOpacity onPress={onPress}>{icon}</TouchableOpacity>;
+    return (
+      <Touchable highlightColor={highlightColor} hitSlop={hitSlop} onPress={onPress}>
+        {icon}
+      </Touchable>
+    );
   }
   return icon;
 };

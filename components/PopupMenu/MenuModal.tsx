@@ -6,7 +6,7 @@ import MenuItem from "./MenuItem";
 
 export interface MenuModalProps {
   style?: StyleProp<ViewStyle>;
-  isVisible?: boolean;
+  visible?: boolean;
   menuPosition?: { top: number; left: number };
   adjustMenuPosition?: (px: number, py: number, width: number) => void;
   onClose?: () => void;
@@ -17,7 +17,7 @@ export interface MenuModalProps {
 
 const MenuModal = ({
   style,
-  isVisible,
+  visible,
   menuPosition,
   adjustMenuPosition,
   onClose,
@@ -26,7 +26,7 @@ const MenuModal = ({
   onPressItem,
 }: MenuModalProps) => {
   return (
-    <Modal visible={isVisible} transparent>
+    <Modal visible={visible} transparent>
       <MenuOverlay onClose={onClose} />
       <Animated.View
         onLayout={(event) =>

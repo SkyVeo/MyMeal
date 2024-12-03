@@ -11,17 +11,23 @@ export interface SortSelectorProps {
 }
 
 const SortSelector = ({ sortOptions = [], activeSortIndex, onChangeSortIndex }: SortSelectorProps) => {
+  const getPopupItems = () => {
+    return sortOptions.map((option, index) => ({ label: option.label, value: index }));
+  };
+
   return (
     <PopupMenu
-      items={sortOptions.map((option, index) => ({ label: option.label, value: index }))}
+      items={getPopupItems()}
       selectedItemIndex={activeSortIndex}
       onPressItem={(item) => onChangeSortIndex?.(item.value)}
     >
       <View style={styles.container}>
         <Icon name="sort" size={20} color={COLOR_TEXT} />
-        {activeSortIndex !== undefined && activeSortIndex >= 0 && activeSortIndex < sortOptions.length && (
-          <Text style={styles.label}>{sortOptions[activeSortIndex].label}</Text>
-        )}
+        <Text style={styles.label}>
+          {activeSortIndex !== undefined && activeSortIndex >= 0 && activeSortIndex < sortOptions.length
+            ? sortOptions[activeSortIndex].label
+            : "Sort"}
+        </Text>
       </View>
     </PopupMenu>
   );
@@ -32,7 +38,6 @@ const COLOR_TEXT = "#a0d6c8";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
     padding: 5,
   },

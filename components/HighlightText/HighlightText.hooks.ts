@@ -30,7 +30,7 @@ export const useHighlightText = (
 
     const highlightRegex = useMemo(
         () => new RegExp(createRegexPattern(searchWords, ignoreTextSpaces), caseSensitive ? "g" : "gi"),
-        [searchWords, ignoreTextSpaces, caseSensitive]
+        [JSON.stringify(searchWords), ignoreTextSpaces, caseSensitive]
     );
     const textSegments = useMemo(() => text.split(highlightRegex), [text, highlightRegex]);
 

@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { colors } from "@/constants/colors";
@@ -11,42 +11,54 @@ import HighlightText from "@/components/HighlightText";
 import { Meal } from "@/classes/meal";
 import PopupMenu from "@/components/PopupMenu";
 import SortMenu from "@/components/SortMenu";
+import MealCard from "@/components/MealCard/MealCard";
+import Touchable from "@/components/Touchable";
+import { images } from "@/constants/images";
 
 const meals: Meal[] = [
   new Meal("Pizza prosciutto")
     .addIngredients("Flour", "Tomato", "Mozzarella", "Ham")
     .addCreationDate("2021-01-01")
-    .addCookingTime(15),
+    .addTags("Pizza", "Italian")
+    .addCookingTime(15)
+    .addImage(images.pizza),
   new Meal("Spaghetti carbonara")
     .addIngredients("Spaghetti", "Egg", "Guanciale", "Pecorino")
     .addCreationDate("2021-01-02")
+    .addTags("Pasta", "Italian")
     .addPrepTime(10)
     .addCookingTime(10),
   new Meal("Tiramisù")
     .addIngredients("Egg", "Sugar", "Mascarpone", "Coffee")
     .addCreationDate("2021-01-03")
+    .addTags("Dessert", "Italian")
     .addPrepTime(30)
     .addCookingTime(0),
   new Meal("Lasagna")
     .addIngredients("Flour", "Tomato", "Mozzarella", "Ragù")
     .addCreationDate("2021-01-04")
+    .addTags("Pasta", "Italian", "Garfield")
     .addPrepTime(30)
     .addCookingTime(30),
   new Meal("Cacio e pepe")
     .addIngredients("Spaghetti", "Pecorino", "Black pepper")
     .addCreationDate("2021-01-05")
+    .addTags("Pasta", "Italian")
     .addPrepTime(10)
     .addCookingTime(10),
   new Meal("Fries")
     .addIngredients("Potatoes", "Salt", "Oil")
     .addCreationDate("2021-01-06")
+    .addTags("Belgian")
     .addPrepTime(10)
     .addCookingTime(10),
   new Meal("Hamburger")
     .addIngredients("Bread", "Meat", "Lettuce", "Tomato")
     .addCreationDate("2021-01-07")
+    .addTags("Cheat meal")
     .addPrepTime(10)
-    .addCookingTime(10),
+    .addCookingTime(10)
+    .addImage(images.hamburger),
   new Meal("Hot dog")
     .addIngredients("Bread", "Sausage", "Ketchup", "Mustard")
     .addCreationDate("2021-01-08")
@@ -55,47 +67,118 @@ const meals: Meal[] = [
   new Meal("Caesar salad")
     .addIngredients("Lettuce", "Chicken", "Bread", "Parmesan")
     .addCreationDate("2021-01-09")
+    .addTags("Healthy")
     .addPrepTime(10)
     .addCookingTime(10),
   new Meal("Caprese")
     .addIngredients("Tomato", "Mozzarella", "Basil", "Oil")
     .addCreationDate("2021-01-10")
+    .addTags("Healthy")
     .addPrepTime(10)
     .addCookingTime(0),
   new Meal("Pasta al pesto")
     .addIngredients("Pasta", "Basil", "Pine nuts", "Parmesan")
     .addCreationDate("2021-01-11")
-    .addPrepTime(10)
-    .addCookingTime(10),
+    .addTags("Pasta", "Italian"),
   new Meal("Pasta alla norma")
     .addIngredients("Pasta", "Tomato", "Eggplant", "Ricotta")
     .addCreationDate("2021-01-12")
+    .addTags("Pasta", "Italian")
     .addPrepTime(10)
     .addCookingTime(10),
   new Meal("Pasta alla puttanesca")
     .addIngredients("Pasta", "Tomato", "Olives", "Capers")
     .addCreationDate("2021-01-13")
+    .addTags("Pasta", "Italian")
     .addPrepTime(10)
     .addCookingTime(10),
   new Meal("Zuppa di ceci")
     .addIngredients("Chickpeas", "Tomato", "Bread", "Oil")
     .addCreationDate("2021-01-14")
-    .addPrepTime(10)
-    .addCookingTime(10),
+    .addTags("Soup", "Italian"),
   new Meal("* \\ + \\d \\s").addIngredients("* \\ + \\d", "Tomato", "Bread", "Oil").addCreationDate("2021-01-15"),
   new Meal("All'Amatriciana")
     .addIngredients("Pasta", "Tomato", "Guanciale", "Pecorino")
     .addCreationDate("2021-01-16")
+    .addTags("Pasta", "Italian")
     .addCookingTime(10),
   new Meal("Pizza margherita")
     .addIngredients("Flour", "Tomato", "Mozzarella", "Basil")
     .addCreationDate("2021-01-17")
+    .addTags("Pizza", "Italian", "cheat")
     .addPrepTime(30)
-    .addCookingTime(15),
+    .addCookingTime(15)
+    .addImage(images.pizza),
   new Meal("Pizza quattro stagioni")
     .addIngredients("Flour", "Tomato", "Mozzarella", "Ham", "Mushrooms", "Artichokes", "Olives")
     .addCreationDate("2021-01-18")
-    .addPrepTime(30),
+    .addTags("Pizza", "Italian", "meal")
+    .addImage(images.pizza),
+  new Meal("Burrito")
+    .addIngredients("Tortilla", "Rice", "Beans", "Meat", "Salsa")
+    .addCreationDate("2021-01-19")
+    .addTags("Mexican", "meal")
+    .addPrepTime(90),
+  new Meal("Tacos")
+    .addIngredients("Tortilla", "Meat", "Salsa", "Guacamole")
+    .addTags("Mexican", "meal")
+    .addPrepTime(120),
+  new Meal("Ham sandwich").addIngredients("Bread", "Ham").addImage(images.sandwich),
+  new Meal("Tomato soup")
+    .addIngredients(
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato"
+    )
+    .addCookingTime(60000),
+  new Meal("Pâtes bolognaise")
+    .addIngredients("Pâtes", "Tomate", "Viande hachée", "Oignon", "Ail")
+    .addCreationDate("2021-01-20")
+    .addTags("Pâtes", "Italien")
+    .addCookingTime(10)
+    .addImage(images.bolognese),
+  new Meal(
+    "Pâté of roasted indigenous legumes, paired with a compote of seasonal berries, served on hearty sprouted wheat bread"
+  )
+    .addIngredients(
+      "Pâté",
+      "Roasted",
+      "Indigenous",
+      "Legumes",
+      "Compote",
+      "Seasonal",
+      "Berries",
+      "Sprouted",
+      "Wheat",
+      "Bread"
+    )
+    .addCreationDate("2021-01-21")
+    .addTags(
+      "Pâté",
+      "Roasted",
+      "Indigenous",
+      "Legumes",
+      "Compote",
+      "Seasonal",
+      "Berries",
+      "Sprouted",
+      "Wheat",
+      "Bread"
+    ),
 ];
 
 function compare<T>(
@@ -139,7 +222,7 @@ const sortOptions: SortOption[] = [
   {
     label: "Creation date",
     compare: (a: Meal, b: Meal, isAscending: boolean) =>
-      compare(a.creationDate, b.creationDate, (a, b) => a.localeCompare(b), isAscending) ||
+      compare(a.creationDate, b.creationDate, (a, b) => a.toISOString().localeCompare(b.toISOString()), isAscending) ||
       tieBreaker(a, b, isAscending),
   },
   {
@@ -160,33 +243,35 @@ export default function Meals() {
     return meals
       .filter((item) =>
         getSearchWords().every(
-          (word) => contains(item.title.replace(/\s+/g, ""), word) || contains(item.ingredients.join(""), word)
+          (word) =>
+            contains(item.title, word) ||
+            contains(item.ingredients.join(","), word) ||
+            contains(item.tags.join(","), word)
         )
       )
-      .sort((a, b) => sortOptions[sortOptionIndex].compare(a, b, isAscending));
+      .sort((a, b) => {
+        const aTitle = getSearchWords().some((word) => contains(a.title, word) || contains(a.tags.join(","), word));
+        const bTitle = getSearchWords().some((word) => contains(b.title, word) || contains(b.tags.join(","), word));
+
+        if (true) {
+          return sortOptions[sortOptionIndex].compare(a, b, isAscending);
+        }
+        if (aTitle) {
+          return -1;
+        }
+        if (bTitle) {
+          return 1;
+        }
+        return sortOptions[sortOptionIndex].compare(a, b, isAscending);
+      });
   };
 
   const contains = (text: string, searchString: string) => {
-    return text.toLowerCase().includes(searchString.toLowerCase());
+    return text.toLowerCase().replace(/\s+/g, "").includes(searchString.toLowerCase());
   };
 
   const renderMeal = ({ item }: { item: Meal }) => {
-    return (
-      <View style={styles.mealContainer}>
-        {/* <Text style={styles.mealTitle}>{item.title}</Text> */}
-        <HighlightText textStyle={styles.mealTitle} text={item.title} searchWords={getSearchWords()} ignoreTextSpaces />
-        <HighlightText
-          textStyle={styles.mealDescription}
-          text={item.ingredients.join(", ")}
-          searchWords={getSearchWords()}
-          ignoreTextSpaces
-        />
-        <Text style={styles.mealDescription}>{item.duration} min</Text>
-        {/* <Text style={styles.mealDescription}>{item.ingredients.join(", ")}</Text> */}
-        {/* {ingredientsCountains(item.ingredients, query) && <Text style={styles.mealDescription}>{item.ingredients.join(", ")}</Text>} */}
-        {/* <Text style={styles.mealDescription}>{item.description}</Text> */}
-      </View>
-    );
+    return <MealCard meal={item} searchWords={getSearchWords()} />;
   };
 
   const [showArrow, setShowArrow] = useState(false);
@@ -240,27 +325,6 @@ export default function Meals() {
           renderItem={renderMeal}
           ListEmptyComponent={<EmptyState title="No Meal Found" subtitle="Whoops!" />}
           ListHeaderComponent={
-            // <View style={styles.bottomContainer}>
-            //   <PopupMenu
-            //     // containerStyle={[styles.bottomContainer, styles.containerElement]}
-            //     items={Object.values(sortOptions).map((option) => ({ label: option.label, value: option }))}
-            //     selectedItemIndex={Object.values(sortOptions).indexOf(sortConfig.option)}
-            //     onPressItem={(item) => setSortConfig({ ...sortConfig, option: item.value })}
-            //   >
-            //     <View style={[styles.bottomContainer, styles.containerElement]}>
-            //       <Icon name="sort" size={20} color={BOTTOM_COLOR} />
-            //       <Text style={{ ...styles.bottomText, marginLeft: 5 }}>{sortConfig.option.label}</Text>
-            //     </View>
-            //   </PopupMenu>
-            //   <Text style={{ ...styles.bottomText, ...styles.containerElement, color: TOP_COLOR }}>|</Text>
-            //   <Icon
-            //     name={sortConfig.isAscending ? "arrowUp" : "arrowDown"}
-            //     size={20}
-            //     color={BOTTOM_COLOR}
-            //     style={styles.containerElement}
-            //     onPress={() => setSortConfig({ ...sortConfig, isAscending: !sortConfig.isAscending })}
-            //   />
-            // </View>
             <SortMenu
               sortOptions={sortOptions}
               activeSortIndex={sortOptionIndex}
@@ -288,7 +352,7 @@ const BOTTOM_COLOR = "#a0d6c8";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.dark.background,
+    // backgroundColor: colors.dark.background,
   },
   backgroundContainer: {
     position: "absolute",

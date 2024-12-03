@@ -29,14 +29,14 @@ export const usePopupMenu = () => {
         setMenuPosition({ top: py, left: menuLeft });
     };
 
-    const showMenu = () => {
+    const handleOpen = () => {
         touchableRef.current?.measure((fx, fy, width, height, px, py) => {
             setMenuPosition({ top: py + height, left: px });
             animateVisibility(true);
         });
     };
 
-    const closeMenu = () => {
+    const handleClose = () => {
         animateVisibility(false);
     };
 
@@ -46,7 +46,7 @@ export const usePopupMenu = () => {
         isVisible,
         menuPosition,
         adjustMenuPosition,
-        showMenu,
-        closeMenu,
+        handleOpen,
+        handleClose,
     };
 };

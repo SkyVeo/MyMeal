@@ -4,6 +4,7 @@ import { SortOption } from "@/app/(tabs)";
 import SortSelector from "./SortSelector";
 import Separator from "./Separator";
 import SortOrderToggle from "./SortOrderToggle";
+import { colors } from "@/constants/colors";
 
 export interface SortMenuProps {
   sortOptions?: SortOption[];
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 10,
     paddingHorizontal: 12,
+    backgroundColor: colors.dark.background,
   },
 });
 

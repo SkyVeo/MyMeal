@@ -1,8 +1,9 @@
-import { TouchableOpacity } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
 import { PropsWithChildren } from "react";
 
 import { usePopupMenu } from "./PopupMenu.hooks";
 import MenuModal from "./MenuModal";
+import Touchable from "../Touchable";
 
 export interface PopupMenuItem {
   label: string;
@@ -17,20 +18,20 @@ export interface PopupMenuProps extends PropsWithChildren {
 }
 
 const PopupMenu = ({ items, selectedItemIndex, onPressItem, children }: PopupMenuProps) => {
-  const { animatedStyle, touchableRef, isVisible, menuPosition, adjustMenuPosition, showMenu, closeMenu } =
+  const { animatedStyle, touchableRef, isVisible, menuPosition, adjustMenuPosition, handleOpen, handleClose } =
     usePopupMenu();
 
   return (
     <>
-      <TouchableOpacity ref={touchableRef} onPress={showMenu}>
+      <Touchable ref={touchableRef} onPress={handleOpen}>
         {children}
-      </TouchableOpacity>
+      </Touchable>
       <MenuModal
         style={animatedStyle}
-        isVisible={isVisible}
+        visible={isVisible}
         menuPosition={menuPosition}
         adjustMenuPosition={adjustMenuPosition}
-        onClose={closeMenu}
+        onClose={handleClose}
         items={items}
         selectedItemIndex={selectedItemIndex}
         onPressItem={onPressItem}
