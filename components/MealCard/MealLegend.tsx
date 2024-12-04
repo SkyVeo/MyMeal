@@ -1,21 +1,10 @@
 import { View, StyleSheet } from "react-native";
+import { PropsWithChildren } from "react";
 
-import HighlightText from "../HighlightText";
-import { Meal } from "@/classes/meal";
-import MealDescription from "./MealDescription";
+export interface MealLegendProps extends PropsWithChildren {}
 
-export interface MealLegendProps {
-  meal: Meal;
-  searchWords?: string[];
-}
-
-const MealLegend = ({ meal, searchWords }: MealLegendProps) => {
-  return (
-    <View style={styles.container}>
-      <HighlightText textStyle={styles.title} text={meal.title} searchWords={searchWords} ignoreTextSpaces />
-      <MealDescription meal={meal} searchWords={searchWords} />
-    </View>
-  );
+const MealLegend = ({ children }: MealLegendProps) => {
+  return <View style={styles.container}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -32,12 +21,6 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOpacity: 0.26,
     elevation: 5,
-  },
-  title: {
-    includeFontPadding: false,
-    textAlign: "center",
-    fontSize: 25,
-    fontFamily: "Poppins-Bold",
   },
 });
 

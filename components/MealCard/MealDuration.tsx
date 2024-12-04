@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 
 import Icon from "../Icon";
+import { textStyles } from "@/constants/styles";
 
 export interface MealDurationProps {
   duration: number;
@@ -24,9 +25,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    includeFontPadding: false,
+    ...textStyles.medium,
     fontSize: 12,
-    fontFamily: "Poppins-Medium",
   },
 });
 

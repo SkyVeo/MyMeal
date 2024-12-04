@@ -1,7 +1,8 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Meal } from "@/classes/meal";
 import HighlightText from "../HighlightText";
+import { textStyles } from "@/constants/styles";
 
 export interface MealIngredientsProps {
   meal: Meal;
@@ -10,21 +11,25 @@ export interface MealIngredientsProps {
 
 const MealIngredients = ({ meal, searchWords }: MealIngredientsProps) => {
   return (
-    <HighlightText
-      textStyle={styles.ingredients}
-      text={meal.ingredientsToString()}
-      searchWords={searchWords}
-      ignoreTextSpaces
-    />
+    <View style={styles.container}>
+      <HighlightText
+        textStyle={styles.ingredients}
+        text={meal.ingredientsToString()}
+        searchWords={searchWords}
+        ignoreTextSpaces
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  ingredients: {
+  container: {
     flex: 1,
-    includeFontPadding: false,
+  },
+  ingredients: {
+    ...textStyles.regular,
+    flex: 1,
     fontSize: 14,
-    fontFamily: "Poppins-Regular",
   },
 });
 

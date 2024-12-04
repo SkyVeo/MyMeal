@@ -6,7 +6,7 @@ import { useAnimation } from "@/hooks/useAnimation";
 export interface FavoriteButtonProps {
   style?: StyleProp<ViewStyle>;
   favorite?: boolean;
-  onToggle?: (isFavorite: boolean) => void;
+  onPress?: (isFavorite: boolean) => void;
   iconStyle?: IconProps["style"];
   iconColor?: IconProps["color"];
   activeIconColor?: IconProps["color"];
@@ -16,7 +16,7 @@ export interface FavoriteButtonProps {
 const FavoriteButton = ({
   style,
   favorite = false,
-  onToggle,
+  onPress,
   iconStyle,
   iconColor = "black",
   activeIconColor = "#ff7043",
@@ -34,13 +34,13 @@ const FavoriteButton = ({
         { toValue: INITIAL_SCALE + SCALING_FACTOR, duration: SCALE_DURATION },
         { toValue: INITIAL_SCALE, duration: SCALE_DURATION },
       ],
-      () => onToggle?.(!favorite)
+      () => onPress?.(!favorite)
     );
   };
 
   return (
     <Animated.View style={[styles.wrapper, style, { transform: [{ scale: scaleValue }] }]}>
-      <Pressable hitSlop={5} onPress={onToggle && toggleFavorite}>
+      <Pressable hitSlop={5} onPress={onPress && toggleFavorite}>
         <Icon
           name={favorite ? "favorite" : "favoriteBorder"}
           style={iconStyle}

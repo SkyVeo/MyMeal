@@ -6,7 +6,7 @@ import { colors } from "@/constants/colors";
 import SearchInput from "@/components/SearchInput";
 import EmptyState from "@/components/EmptyState";
 import Icon from "@/components/Icon";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import HighlightText from "@/components/HighlightText";
 import { Meal } from "@/classes/meal";
 import PopupMenu from "@/components/PopupMenu";
@@ -14,6 +14,7 @@ import SortMenu from "@/components/SortMenu";
 import MealCard from "@/components/MealCard/MealCard";
 import Touchable from "@/components/Touchable";
 import { images } from "@/constants/images";
+import Header from "@/components/Header/Header";
 
 const meals: Meal[] = [
   new Meal("Pizza prosciutto")
@@ -309,16 +310,7 @@ export default function Meals() {
           height: Dimensions.get("window").height - 64,
         }}
       >
-        <Header
-          searchValue={query}
-          onChangeText={setQuery}
-          // sortText={sortConfig.option.label}
-          // sortOptions={Object.values(sortOptions).map((option) => ({ caption: option.label, value: option }))}
-          // selectedSortOptionIndex={Object.values(sortOptions).indexOf(sortConfig.option)}
-          // onSetSortOption={(option) => setSortConfig({ ...sortConfig, option })}
-          // isAscending={sortConfig.isAscending}
-          // onChangeSortOrder={(isAscending) => setSortConfig({ ...sortConfig, isAscending })}
-        />
+        <Header text={query} onChangeText={setQuery} />
         <FlatList
           ref={flatListRef}
           data={getFilteredMeals()}
@@ -352,7 +344,7 @@ const BOTTOM_COLOR = "#a0d6c8";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: colors.dark.background,
+    backgroundColor: "#b9b39c",
   },
   backgroundContainer: {
     position: "absolute",

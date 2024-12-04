@@ -1,3 +1,4 @@
+import { textStyles } from "@/constants/styles";
 import { View, Text, StyleSheet } from "react-native";
 
 export interface MealDateProps {
@@ -27,14 +28,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   month: {
-    includeFontPadding: false,
+    ...textStyles.medium,
     fontSize: 12,
-    fontFamily: "Poppins-Medium",
   },
   day: {
-    includeFontPadding: false,
+    ...textStyles.medium,
     fontSize: 20,
-    fontFamily: "Poppins-Medium",
   },
 });
 
