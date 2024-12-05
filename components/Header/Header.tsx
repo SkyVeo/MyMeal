@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { View, Text, StyleSheet } from "react-native";
 
 import Icon from "../Icon";
-import { textStyles } from "@/constants/styles";
+import { globalStyles } from "@/constants/styles";
 import SearchBar from "./SearchBar";
 
 export interface HeaderProps {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 15,
   },
   title: {
-    ...textStyles.bold,
+    ...globalStyles.bold,
     fontSize: 25,
   },
   icon: {

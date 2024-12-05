@@ -97,7 +97,7 @@ const meals: Meal[] = [
     .addIngredients("Chickpeas", "Tomato", "Bread", "Oil")
     .addCreationDate("2021-01-14")
     .addTags("Soup", "Italian"),
-  new Meal("* \\ + \\d \\s").addIngredients("* \\ + \\d", "Tomato", "Bread", "Oil").addCreationDate("2021-01-15"),
+  new Meal("* \\ + \\d \\s").addIngredients("* \\ + \\d", "Tomato", "Bread", "Oil").addCreationDate("2021-01-15").addImage(images.empty),
   new Meal("All'Amatriciana")
     .addIngredients("Pasta", "Tomato", "Guanciale", "Pecorino")
     .addCreationDate("2021-01-16")
@@ -272,7 +272,9 @@ export default function Meals() {
   };
 
   const renderMeal = ({ item }: { item: Meal }) => {
-    return <MealCard meal={item} searchWords={getSearchWords()} />;
+    return (
+      <MealCard meal={item} searchWords={getSearchWords()} flatListValues={{ gap: 10, margin: 10, numColumns: 2 }} />
+    );
   };
 
   const [showArrow, setShowArrow] = useState(false);
@@ -327,6 +329,8 @@ export default function Meals() {
           }
           onScroll={handleScroll}
           scrollEventThrottle={16}
+          numColumns={2}
+          columnWrapperStyle={{ margin: 10, gap: 10 }}
         />
         <Animated.View style={{ transform: [{ translateY: arrowOpacity }] }}>
           <TouchableOpacity onPress={scrollToTop} style={styles.arrowContainer}>

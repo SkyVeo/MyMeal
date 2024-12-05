@@ -1,23 +1,41 @@
-import { StyleSheet, Pressable } from "react-native";
+import { StyleSheet, Pressable, Image, View, Dimensions } from "react-native";
 
 import { Meal } from "@/classes/meal";
-import MealBackground from "./MealBackground";
 import { useMealFavorite } from "./MealCard.hooks";
-import MealLegend from "./MealLegend";
-import HighlightText from "../HighlightText";
-import MealDescription from "./MealDescription";
-import MealDate from "./MealDate";
 import MealIngredients from "./MealIngredients";
 import MealDuration from "./MealDuration";
 import FavoriteButton from "../FavoriteButton";
-import { textStyles } from "@/constants/styles";
+import { globalStyles } from "@/constants/styles";
+import MealLegend from "./MealLegend";
+import MealTitle from "./MealTitle";
+import MealFooter from "./MealFooter";
+import { colors } from "@/constants/colors";
+
+interface FlatListValues {
+  margin?: number;
+  gap?: number;
+  numColumns?: number;
+}
 
 export interface MealCardProps {
   meal: Meal;
   searchWords?: string[];
+  flatListValues?: FlatListValues;
 }
 
-const MealCard = ({ meal, searchWords = [] }: MealCardProps) => {
+const BORDER_RADIUS = 15;
+const WIDTH = Dimensions.get("window").width;
+
+const getImageSize = ({ margin = 0, gap = 0, numColumns = 1 }: FlatListValues) => {
+  const margins = 2 * margin;
+  const gaps = (numColumns - 1) * gap;
+  const imageSize = (WIDTH - margins - gaps) / numColumns;
+
+  return imageSize;
+};
+
+const MealCard = ({ meal, searchWords = [], flatListValues = {} }: MealCardProps) => {
+  const imageSize = getImageSize(flatListValues);
   const { isFavorite, handleToggleFavorite } = useMealFavorite(meal);
 
   const handlePress = () => {
@@ -25,18 +43,19 @@ const MealCard = ({ meal, searchWords = [] }: MealCardProps) => {
   };
 
   return (
-    <Pressable style={styles.container} onPress={handlePress}>
-      <MealBackground image={meal.image}>
-        <FavoriteButton style={styles.favoriteButton} favorite={isFavorite} onPress={handleToggleFavorite} />
-      </MealBackground>
+    <Pressable style={{ ...styles.container, maxWidth: imageSize }} onPress={handlePress}>
+      <Image style={{ ...styles.image, height: imageSize }} source={meal.image} />
 
       <MealLegend>
-        <HighlightText textStyle={styles.title} text={meal.title} searchWords={searchWords} ignoreTextSpaces />
-        <MealDescription>
-          <MealDate creationDate={meal.creationDate} />
+        <View>
+          <MealTitle title={meal.title} searchWords={searchWords} />
           <MealIngredients meal={meal} searchWords={searchWords} />
+        </View>
+
+        <MealFooter>
           {meal.duration !== undefined && <MealDuration duration={meal.duration} />}
-        </MealDescription>
+          <FavoriteButton favorite={isFavorite} onPress={handleToggleFavorite} />
+        </MealFooter>
       </MealLegend>
     </Pressable>
   );
@@ -44,28 +63,16 @@ const MealCard = ({ meal, searchWords = [] }: MealCardProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    ...globalStyles.shadow,
     flex: 1,
-    backgroundColor: "#b9b39c",
-    paddingTop: 10,
+    backgroundColor: colors.light.background,
+    borderRadius: BORDER_RADIUS,
   },
-  title: {
-    ...textStyles.bold,
-    textAlign: "center",
-    fontSize: 25,
-  },
-  ingredientsContainer: {
-    flex: 1,
-  },
-  favoriteButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 10,
-    backgroundColor: "#ececdd",
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    elevation: 5,
+  image: {
+    width: "100%",
+    resizeMode: "cover",
+    borderTopLeftRadius: BORDER_RADIUS,
+    borderTopRightRadius: BORDER_RADIUS,
   },
 });
 

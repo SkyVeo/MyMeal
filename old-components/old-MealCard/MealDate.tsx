@@ -1,4 +1,4 @@
-import { textStyles } from "@/constants/styles";
+import { globalStyles } from "@/constants/styles";
 import { View, Text, StyleSheet } from "react-native";
 
 export interface MealDateProps {
@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   month: {
-    ...textStyles.medium,
+    ...globalStyles.medium,
     fontSize: 12,
   },
   day: {
-    ...textStyles.medium,
+    ...globalStyles.medium,
     fontSize: 20,
   },
 });

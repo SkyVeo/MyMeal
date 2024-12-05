@@ -1,4 +1,4 @@
-import { Animated, Pressable, StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { Animated, Pressable, StyleProp, ViewStyle } from "react-native";
 
 import Icon, { IconProps } from "@/components/Icon";
 import { useAnimation } from "@/hooks/useAnimation";
@@ -39,7 +39,7 @@ const FavoriteButton = ({
   };
 
   return (
-    <Animated.View style={[styles.wrapper, style, { transform: [{ scale: scaleValue }] }]}>
+    <Animated.View style={[style, { transform: [{ scale: scaleValue }] }]}>
       <Pressable hitSlop={5} onPress={onPress && toggleFavorite}>
         <Icon
           name={favorite ? "favorite" : "favoriteBorder"}
@@ -51,13 +51,5 @@ const FavoriteButton = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: "white",
-    padding: 5,
-    borderRadius: 100,
-  },
-});
 
 export default FavoriteButton;

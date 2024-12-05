@@ -1,3 +1,5 @@
+import { images } from "@/constants/images";
+
 export class Meal {
     title: string;
     ingredients: string[];
@@ -14,6 +16,7 @@ export class Meal {
         this.creationDate = new Date();
         this.tags = [];
         this.isFavorite = false;
+        this.image = images.default;
     }
 
     get duration() {

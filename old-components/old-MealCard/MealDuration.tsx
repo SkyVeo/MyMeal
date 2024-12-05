@@ -1,16 +1,13 @@
 import { View, Text, StyleSheet } from "react-native";
 
-import Icon from "../Icon";
+import Icon from "../../components/Icon";
 import { globalStyles } from "@/constants/styles";
 
 export interface MealDurationProps {
-  duration?: number;
+  duration: number;
 }
 
-const durationToString = (duration?: number) => {
-  if (duration === undefined) {
-    return "? min";
-  }
+const durationToString = (duration: number) => {
   return duration % 60 === 0 ? `${duration / 60} h` : `${duration} min`;
 };
 
@@ -25,14 +22,11 @@ const MealDuration = ({ duration }: MealDurationProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "row",
     alignItems: "center",
-    gap: 5,
   },
   text: {
     ...globalStyles.medium,
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 
