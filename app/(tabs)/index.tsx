@@ -97,7 +97,10 @@ const meals: Meal[] = [
     .addIngredients("Chickpeas", "Tomato", "Bread", "Oil")
     .addCreationDate("2021-01-14")
     .addTags("Soup", "Italian"),
-  new Meal("* \\ + \\d \\s").addIngredients("* \\ + \\d", "Tomato", "Bread", "Oil").addCreationDate("2021-01-15").addImage(images.empty),
+  new Meal("* \\ + \\d \\s")
+    .addIngredients("* \\ + \\d", "Tomato", "Bread", "Oil")
+    .addCreationDate("2021-01-15")
+    .addImage(images.empty),
   new Meal("All'Amatriciana")
     .addIngredients("Pasta", "Tomato", "Guanciale", "Pecorino")
     .addCreationDate("2021-01-16")
@@ -348,7 +351,7 @@ const BOTTOM_COLOR = "#a0d6c8";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#b9b39c",
+    backgroundColor: colors.light.background,
   },
   backgroundContainer: {
     position: "absolute",
