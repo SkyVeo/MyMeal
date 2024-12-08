@@ -9,23 +9,23 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import SearchBarIcon, { SearchBarIconProps } from "./SearchBarIcon";
+import Icon, { IconProps } from "../Icon";
 
 export interface SearchBarProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
   textInputStyle?: StyleProp<TextStyle>;
-  searchIcon?: SearchBarIconProps["icon"];
-  cancelIcon?: SearchBarIconProps["icon"];
+  searchIconProps?: IconProps;
+  cancelIconProps?: IconProps;
   onClear?: () => void;
 }
 
 const SearchBar = ({
   containerStyle,
   textInputStyle,
-  searchIcon,
+  searchIconProps,
   value,
   onChangeText,
-  cancelIcon,
+  cancelIconProps,
   onClear,
   ...props
 }: SearchBarProps) => {
@@ -36,7 +36,7 @@ const SearchBar = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <SearchBarIcon defaultName="search" size={20} icon={searchIcon} />
+      <Icon name="search" size={20} {...searchIconProps} />
       <TextInput
         style={[styles.textInput, textInputStyle]}
         value={value}
@@ -45,9 +45,9 @@ const SearchBar = ({
         returnKeyType="search"
         {...props}
       />
-      <TouchableOpacity onPress={handleClear}>
-        <SearchBarIcon defaultName="cancel" icon={value ? cancelIcon : false} />
-      </TouchableOpacity>
+      {value && <TouchableOpacity onPress={handleClear}>
+        <Icon name="cancel" size={20} {...cancelIconProps} />
+      </TouchableOpacity>}
     </View>
   );
 };

@@ -325,14 +325,14 @@ export default function Meals() {
             paddingHorizontal: 15,
             height: 50,
           }}
-          searchIcon={{
+          searchIconProps={{
             color: colors.light.textSecondary,
           }}
           textInputStyle={{
             ...globalStyles.regular,
             fontSize: 16,
           }}
-          cancelIcon={{
+          cancelIconProps={{
             color: colors.light.textSecondary,
           }}
           placeholder="Meal, ingredients..."
