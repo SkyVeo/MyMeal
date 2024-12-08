@@ -1,4 +1,4 @@
-import { StyleProp, TextStyle, TouchableOpacity } from "react-native";
+import { StyleProp, TextStyle } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -6,12 +6,15 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
-import Touchable from "@/components/Touchable";
-
 export interface IconComponentProps {
+  style?: StyleProp<TextStyle>;
   size?: number;
   color?: string;
-  style?: StyleProp<TextStyle>;
+  onPress?: () => void;
+}
+
+export interface IconProps extends IconComponentProps {
+  name: IconKey;
 }
 
 export type IconKey =
@@ -31,7 +34,7 @@ export type IconKey =
   | "clock"
   | "ingredient";
 
-const icons: { [key in IconKey]: (props: IconComponentProps) => React.ReactNode } = {
+const icons: { [key in IconKey]: (props: IconComponentProps) => React.JSX.Element } = {
   meal: (props) => <MaterialCommunityIcons name="silverware-fork-knife" {...props} />,
   shopping: (props) => <AntDesign name="shoppingcart" {...props} />,
   search: (props) => <AntDesign name="search1" {...props} />,
@@ -49,25 +52,8 @@ const icons: { [key in IconKey]: (props: IconComponentProps) => React.ReactNode 
   ingredient: (props) => <FontAwesome6 name="carrot" {...props} />,
 };
 
-export interface IconProps extends IconComponentProps {
-  name: IconKey;
-  highlightColor?: string;
-  hitSlop?: number;
-  onPress?: () => void;
-}
-
-// TODO redo props
-const Icon = ({ name, size, color, style, highlightColor, hitSlop, onPress }: IconProps) => {
-  const icon = icons[name]({ size, color, style });
-
-  if (onPress) {
-    return (
-      <Touchable highlightColor={highlightColor} hitSlop={hitSlop} onPress={onPress}>
-        {icon}
-      </Touchable>
-    );
-  }
-  return icon;
+const Icon = ({ name, ...props }: IconProps) => {
+  return icons[name](props);
 };
 
 export default Icon;
