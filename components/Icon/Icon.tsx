@@ -56,6 +56,7 @@ export interface IconProps extends IconComponentProps {
   onPress?: () => void;
 }
 
+// TODO redo props
 const Icon = ({ name, size, color, style, highlightColor, hitSlop, onPress }: IconProps) => {
   const icon = icons[name]({ size, color, style });
 

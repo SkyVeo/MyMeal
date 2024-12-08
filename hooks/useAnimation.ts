@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { Animated, EasingFunction } from "react-native";
+import { Animated, EasingFunction, useAnimatedValue } from "react-native";
 
 export interface AnimationConfig {
     toValue?: number;
@@ -10,7 +9,7 @@ export interface AnimationConfig {
 }
 
 export const useAnimation = (initialValue: number = 0) => {
-    const animatedValue = useRef(new Animated.Value(initialValue)).current;
+    const animatedValue = useAnimatedValue(initialValue);
 
     const animation = (config: AnimationConfig = {}) => {
         const { toValue = 1, duration = 200, easing, useNativeDriver = true, delay } = config;

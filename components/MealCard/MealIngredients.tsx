@@ -1,8 +1,9 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { Meal } from "@/classes/meal";
 import HighlightText from "../HighlightText";
 import { globalStyles } from "@/constants/styles";
+import { colors } from "@/constants/colors";
 
 export interface MealIngredientsProps {
   meal: Meal;
@@ -23,6 +24,7 @@ const MealIngredients = ({ meal, searchWords }: MealIngredientsProps) => {
 const styles = StyleSheet.create({
   ingredients: {
     ...globalStyles.regular,
+    color: colors.light.textSecondary,
     fontSize: 14,
   },
 });

@@ -69,6 +69,10 @@ export class Meal {
         return this;
     }
 
+    toggleFavorite() {
+        this.isFavorite = !this.isFavorite;
+    }
+
     durationToString() {
         return this.duration ? (this.duration % 60 === 0 ? `${this.duration / 60} h` : `${this.duration} min`) : "";
     }

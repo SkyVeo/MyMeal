@@ -15,6 +15,8 @@ import MealCard from "@/components/MealCard/MealCard";
 import Touchable from "@/components/Touchable";
 import { images } from "@/constants/images";
 import Header from "@/components/Header/Header";
+import SearchBar from "@/components/SearchBar";
+import { globalStyles } from "@/constants/styles";
 
 const meals: Meal[] = [
   new Meal("Pizza prosciutto")
@@ -315,21 +317,44 @@ export default function Meals() {
           height: Dimensions.get("window").height - 64,
         }}
       >
-        <Header text={query} onChangeText={setQuery} />
+        <SearchBar
+          containerStyle={{
+            backgroundColor: colors.light.tint,
+            margin: 10,
+            borderRadius: 25,
+            paddingHorizontal: 15,
+            height: 50,
+          }}
+          searchIcon={{
+            color: colors.light.textSecondary,
+          }}
+          textInputStyle={{
+            ...globalStyles.regular,
+            fontSize: 16,
+          }}
+          cancelIcon={{
+            color: colors.light.textSecondary,
+          }}
+          placeholder="Meal, ingredients..."
+          placeholderTextColor={colors.light.textSecondary}
+          value={query}
+          onChangeText={setQuery}
+        />
+        {/* <Header text={query} onChangeText={setQuery} /> */}
         <FlatList
           ref={flatListRef}
           data={getFilteredMeals()}
           renderItem={renderMeal}
           ListEmptyComponent={<EmptyState title="No Meal Found" subtitle="Whoops!" />}
-          ListHeaderComponent={
-            <SortMenu
-              sortOptions={sortOptions}
-              activeSortIndex={sortOptionIndex}
-              onChangeSortIndex={setSortOptionIndex}
-              isAscending={isAscending}
-              onToggleSortOrder={setIsAscending}
-            />
-          }
+          // ListHeaderComponent={
+          //   <SortMenu
+          //     sortOptions={sortOptions}
+          //     activeSortIndex={sortOptionIndex}
+          //     onChangeSortIndex={setSortOptionIndex}
+          //     isAscending={isAscending}
+          //     onToggleSortOrder={setIsAscending}
+          //   />
+          // }
           onScroll={handleScroll}
           scrollEventThrottle={16}
           numColumns={2}

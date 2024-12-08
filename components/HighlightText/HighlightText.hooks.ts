@@ -28,9 +28,10 @@ export const useHighlightText = (
         return { textSegments: [text], highlightRegex: null };
     }
 
+    // TODO try with string
     const highlightRegex = useMemo(
         () => new RegExp(createRegexPattern(searchWords, ignoreTextSpaces), caseSensitive ? "g" : "gi"),
-        [JSON.stringify(searchWords), ignoreTextSpaces, caseSensitive]
+        [searchWords, ignoreTextSpaces, caseSensitive]
     );
     const textSegments = useMemo(() => text.split(highlightRegex), [text, highlightRegex]);
 

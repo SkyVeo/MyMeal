@@ -11,7 +11,7 @@ export const useMealFavorite = (meal: Meal) => {
 
     const handleToggleFavorite = (isFavorite: boolean) => {
         setIsFavorite(isFavorite);
-        meal.isFavorite = isFavorite;
+        meal.toggleFavorite();
     }
 
     return { isFavorite, handleToggleFavorite };
