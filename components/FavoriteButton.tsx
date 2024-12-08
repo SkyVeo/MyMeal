@@ -2,6 +2,7 @@ import { Animated, Pressable, StyleProp, ViewStyle } from "react-native";
 
 import Icon, { IconProps } from "@/components/Icon";
 import { useAnimation } from "@/hooks/useAnimation";
+import { colors } from "@/constants/colors";
 
 export interface FavoriteButtonProps {
   style?: StyleProp<ViewStyle>;
@@ -13,13 +14,14 @@ export interface FavoriteButtonProps {
   iconSize?: IconProps["size"];
 }
 
+// TODO give the option to change the icon
 const FavoriteButton = ({
   style,
   favorite = false,
   onPress,
   iconStyle,
-  iconColor = "black",
-  activeIconColor = "#ff7043",
+  iconColor = colors.light.text,
+  activeIconColor = colors.light.backgroundSecondary,
   iconSize = 24,
 }: FavoriteButtonProps) => {
   const INITIAL_SCALE = 1;

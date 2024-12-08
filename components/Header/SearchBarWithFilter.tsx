@@ -10,6 +10,8 @@ export interface SearchBarWithFilterProps {
   onChangeText?: (text: string) => void;
 }
 
+const HEIGHT = 50;
+
 const SearchBarWithFilter = ({ value, onChangeText }: SearchBarWithFilterProps) => {
   return (
     <View style={styles.container}>
@@ -23,10 +25,10 @@ const SearchBarWithFilter = ({ value, onChangeText }: SearchBarWithFilterProps) 
         searchIconProps={{ color: colors.light.textSecondary }}
         cancelIconProps={{ color: colors.light.textSecondary }}
         selectionColor={colors.light.highlight}
-        cursorColor={colors.light.tabIconSelected}
-        selectionHandleColor={colors.light.tabIconSelected}
+        cursorColor={colors.light.backgroundSecondary}
+        selectionHandleColor={colors.light.backgroundSecondary}
       />
-      <FilterButton />
+      <FilterButton containerStyle={styles.filterButtonContainer} />
     </View>
   );
 };
@@ -42,12 +44,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.tint,
     borderRadius: 25,
     paddingHorizontal: 15,
-    height: 50,
+    height: HEIGHT,
   },
   textInput: {
     ...globalStyles.regular,
     fontSize: 16,
   },
+  filterButtonContainer: {
+    height: HEIGHT,
+    width: HEIGHT,
+  }
 });
 
 export default SearchBarWithFilter;

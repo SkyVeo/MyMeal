@@ -5,6 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export interface IconComponentProps {
   style?: StyleProp<TextStyle>;
@@ -28,7 +29,8 @@ export type IconKey =
   | "favorite"
   | "favoriteBorder"
   | "clock"
-  | "ingredient";
+  | "ingredient"
+  | "filter";
 
 export const icons: { [key in IconKey]: (props: IconComponentProps) => React.JSX.Element } = {
   meal: (props) => <MaterialCommunityIcons name="silverware-fork-knife" {...props} />,
@@ -46,4 +48,5 @@ export const icons: { [key in IconKey]: (props: IconComponentProps) => React.JSX
   favoriteBorder: (props) => <MaterialIcons name="favorite-border" {...props} />,
   clock: (props) => <Feather name="clock" {...props} />,
   ingredient: (props) => <FontAwesome6 name="carrot" {...props} />,
+  filter: (props) => <FontAwesome name="sliders" {...props} />,
 };

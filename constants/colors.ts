@@ -40,6 +40,7 @@ export const colors = {
         text: "#11181C",
         textSecondary: "#6e6e6e",
         background: "#fff",
+        backgroundSecondary: "#ff7043",
         tint: "#e7e7e7",
         icon: "#687076",
         highlight: "rgba(255, 145, 107, 0.7)",
