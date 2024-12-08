@@ -16,7 +16,7 @@ const FilterButton = ({ containerStyle }: FilterButtonProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.light.backgroundSecondary,
+    backgroundColor: colors.light.backgroundTertiary,
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",

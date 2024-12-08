@@ -25,8 +25,8 @@ const SearchBarWithFilter = ({ value, onChangeText }: SearchBarWithFilterProps) 
         searchIconProps={{ color: colors.light.textSecondary }}
         cancelIconProps={{ color: colors.light.textSecondary }}
         selectionColor={colors.light.highlight}
-        cursorColor={colors.light.backgroundSecondary}
-        selectionHandleColor={colors.light.backgroundSecondary}
+        cursorColor={colors.light.backgroundTertiary}
+        selectionHandleColor={colors.light.backgroundTertiary}
       />
       <FilterButton containerStyle={styles.filterButtonContainer} />
     </View>

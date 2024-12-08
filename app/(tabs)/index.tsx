@@ -20,6 +20,7 @@ import { globalStyles } from "@/constants/styles";
 import SearchBarWithFilter from "@/components/Header/SearchBarWithFilter";
 import Title from "@/components/Header/Title";
 import { StatusBar } from "expo-status-bar";
+import Tag from "@/components/Tag";
 
 const meals: Meal[] = [
   new Meal("Pizza prosciutto")
@@ -250,13 +251,12 @@ export default function Meals() {
 
   const getFilteredMeals = () => {
     return meals
-      .filter((item) =>
-        getSearchWords().every(
-          (word) =>
-            contains(item.title, word) ||
-            contains(item.ingredients.join(","), word) ||
-            contains(item.tags.join(","), word)
-        )
+      .filter(
+        (item) =>
+          getSearchWords().every(
+            (word) => contains(item.title, word) || contains(item.ingredients.join(","), word)
+            // contains(item.tags.join(","), word)
+          ) && selectedTags.every((tag) => item.tags.includes(tag))
       )
       .sort((a, b) => {
         const aTitle = getSearchWords().some((word) => contains(a.title, word) || contains(a.tags.join(","), word));
@@ -313,6 +313,69 @@ export default function Meals() {
     flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
+  const isTagSelected = (tag: string) => {
+    return selectedTags.includes(tag);
+  };
+
+  const getFilterTags = () => {
+    return tags.sort((a, b) => a.title.localeCompare(b.title));
+  };
+
+  const tags = [
+    {
+      emoji: "🍕",
+      title: "Pizza",
+      isSelected: false,
+    },
+    {
+      emoji: "🍝",
+      title: "Pasta",
+      isSelected: false,
+    },
+    {
+      emoji: "🇮🇹",
+      title: "Italian",
+      isSelected: false,
+    },
+    {
+      title: "Dessert",
+      isSelected: false,
+    },
+    {
+      emoji: "🥕",
+      title: "Healthy",
+      isSelected: false,
+    },
+    {
+      emoji: "🍔",
+      title: "Cheat meal",
+      isSelected: false,
+    },
+    {
+      emoji: "😺",
+      title: "Garfield",
+      isSelected: false,
+    },
+    {
+      title: "Belgian",
+      isSelected: false,
+    },
+    {
+      title: "Mexican",
+      isSelected: false,
+    },
+  ];
+
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const handleTagPress = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
@@ -323,9 +386,24 @@ export default function Meals() {
         }}
       >
         <Header>
-          <Title>All Meals</Title>
+          <Title>My Meals</Title>
           <SearchBarWithFilter value={query} onChangeText={setQuery} />
         </Header>
+        <View>
+          <FlatList
+            data={getFilterTags()}
+            renderItem={({ item }) => (
+              <Tag
+                emoji={item.emoji}
+                title={item.title}
+                selected={isTagSelected(item.title)}
+                onPress={() => handleTagPress(item.title)}
+              />
+            )}
+            horizontal
+            contentContainerStyle={{ gap: 10, marginVertical: 10, paddingHorizontal: 10 }}
+          />
+        </View>
         <FlatList
           ref={flatListRef}
           data={getFilteredMeals()}

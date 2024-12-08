@@ -1,5 +1,6 @@
 import { Text, StyleSheet, StyleProp, TextStyle, TextProps } from "react-native";
 import { useHighlightText } from "./HighlightText.hooks";
+import { colors } from "@/constants/colors";
 
 export interface HighlightTextProps extends TextProps {
   textStyle?: StyleProp<TextStyle>;
@@ -37,7 +38,7 @@ const HighlightText = ({
 
 const styles = StyleSheet.create({
   highlight: {
-    backgroundColor: "rgba(255, 145, 107, 0.7)",
+    backgroundColor: colors.light.highlight,
     borderRadius: 4,
   },
 });
