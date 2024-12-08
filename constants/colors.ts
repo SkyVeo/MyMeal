@@ -42,8 +42,9 @@ export const colors = {
         background: "#fff",
         tint: "#e7e7e7",
         icon: "#687076",
+        highlight: "rgba(255, 145, 107, 0.7)",
         tabIconDefault: "#687076",
-        tabIconSelected: tintColorLight,
+        tabIconSelected: "#ff7043",
     },
     dark: light,
 };

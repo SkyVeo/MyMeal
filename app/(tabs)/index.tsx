@@ -17,6 +17,9 @@ import { images } from "@/constants/images";
 import Header from "@/components/Header/Header";
 import SearchBar from "@/components/SearchBar";
 import { globalStyles } from "@/constants/styles";
+import SearchBarWithFilter from "@/components/Header/SearchBarWithFilter";
+import Title from "@/components/Header/Title";
+import { StatusBar } from "expo-status-bar";
 
 const meals: Meal[] = [
   new Meal("Pizza prosciutto")
@@ -312,49 +315,22 @@ export default function Meals() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="dark" />
       <View
         style={{
           height: Dimensions.get("window").height - 64,
+          width: Dimensions.get("window").width,
         }}
       >
-        <SearchBar
-          containerStyle={{
-            backgroundColor: colors.light.tint,
-            margin: 10,
-            borderRadius: 25,
-            paddingHorizontal: 15,
-            height: 50,
-          }}
-          searchIconProps={{
-            color: colors.light.textSecondary,
-          }}
-          textInputStyle={{
-            ...globalStyles.regular,
-            fontSize: 16,
-          }}
-          cancelIconProps={{
-            color: colors.light.textSecondary,
-          }}
-          placeholder="Meal, ingredients..."
-          placeholderTextColor={colors.light.textSecondary}
-          value={query}
-          onChangeText={setQuery}
-        />
-        {/* <Header text={query} onChangeText={setQuery} /> */}
+        <Header>
+          <Title>All Meals</Title>
+          <SearchBarWithFilter value={query} onChangeText={setQuery} />
+        </Header>
         <FlatList
           ref={flatListRef}
           data={getFilteredMeals()}
           renderItem={renderMeal}
           ListEmptyComponent={<EmptyState title="No Meal Found" subtitle="Whoops!" />}
-          // ListHeaderComponent={
-          //   <SortMenu
-          //     sortOptions={sortOptions}
-          //     activeSortIndex={sortOptionIndex}
-          //     onChangeSortIndex={setSortOptionIndex}
-          //     isAscending={isAscending}
-          //     onToggleSortOrder={setIsAscending}
-          //   />
-          // }
           onScroll={handleScroll}
           scrollEventThrottle={16}
           numColumns={2}
