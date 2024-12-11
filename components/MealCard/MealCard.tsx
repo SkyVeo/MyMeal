@@ -4,7 +4,7 @@ import { Meal } from "@/classes/meal";
 import { useMealFavorite } from "./MealCard.hooks";
 import MealIngredients from "./MealIngredients";
 import MealDuration from "./MealDuration";
-import FavoriteButton from "../FavoriteButton";
+import FavoriteButton from "../FavoriteButton/FavoriteButton";
 import { globalStyles } from "@/constants/styles";
 import MealLegend from "./MealLegend";
 import MealTitle from "./MealTitle";

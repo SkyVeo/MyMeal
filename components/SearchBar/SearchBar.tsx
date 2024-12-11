@@ -19,6 +19,8 @@ export interface SearchBarProps extends TextInputProps {
   onClear?: () => void;
 }
 
+const ICON_SIZE = 20;
+
 const SearchBar = ({
   containerStyle,
   textInputStyle,
@@ -36,7 +38,7 @@ const SearchBar = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <Icon name="search" size={20} {...searchIconProps} />
+      <Icon name="search" size={ICON_SIZE} {...searchIconProps} />
       <TextInput
         style={[styles.textInput, textInputStyle]}
         value={value}
@@ -46,7 +48,7 @@ const SearchBar = ({
         {...props}
       />
       {value && <TouchableOpacity onPress={handleClear}>
-        <Icon name="cancel" size={20} {...cancelIconProps} />
+        <Icon name="cancel" size={ICON_SIZE} {...cancelIconProps} />
       </TouchableOpacity>}
     </View>
   );

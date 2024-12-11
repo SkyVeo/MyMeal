@@ -1,5 +1,6 @@
-import { colors } from "@/constants/colors";
 import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
+
+import { colors } from "@/constants/colors";
 import Icon from "../Icon";
 
 export interface FilterButtonProps {

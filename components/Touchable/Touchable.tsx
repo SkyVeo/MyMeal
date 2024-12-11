@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { PressableProps, Animated, StyleSheet, Pressable, View, GestureResponderEvent } from "react-native";
 
 import { useTouchable } from "./Touchable.hooks";
-import { useAnimation } from "@/hooks/useAnimation";
+import { useAnimation } from "@/components/Animation/useAnimation";
 
 const DEFAULT_COLOR = "#52bfa3";
 

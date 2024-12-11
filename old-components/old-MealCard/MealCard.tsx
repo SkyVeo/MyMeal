@@ -9,7 +9,7 @@ import MealDescription from "./MealDescription";
 import MealDate from "./MealDate";
 import MealIngredients from "./MealIngredients";
 import MealDuration from "./MealDuration";
-import FavoriteButton from "../../components/FavoriteButton";
+import FavoriteButton from "../../components/FavoriteButton/FavoriteButton";
 import { globalStyles } from "@/constants/styles";
 
 export interface MealCardProps {

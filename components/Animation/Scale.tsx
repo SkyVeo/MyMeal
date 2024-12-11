@@ -1,6 +1,6 @@
 import { Animated, GestureResponderEvent, Pressable, PressableProps, StyleProp, ViewStyle } from "react-native";
 
-import { useAnimation } from "@/hooks/useAnimation";
+import { useAnimation } from "@/components/Animation/useAnimation";
 
 export interface ScaleProps extends PressableProps {
   style?: StyleProp<ViewStyle>;
@@ -36,7 +36,7 @@ const Scale = ({
 
   return (
     <Animated.View style={[style, { transform: [{ scale: scaleValue }] }]}>
-      <Pressable onPress={onPress && handleToggle} {...props}>
+      <Pressable onPress={handleToggle} {...props}>
         {children}
       </Pressable>
     </Animated.View>

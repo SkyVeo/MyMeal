@@ -382,7 +382,7 @@ export default function Meals() {
       <View
         style={{
           height: Dimensions.get("window").height - 64,
-          width: Dimensions.get("window").width,
+          // width: Dimensions.get("window").width,
         }}
       >
         <Header>
