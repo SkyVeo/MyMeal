@@ -20,10 +20,10 @@ import { globalStyles } from "@/constants/styles";
 import SearchBarWithFilter from "@/components/Header/SearchBarWithFilter";
 import Title from "@/components/Header/Title";
 import { StatusBar } from "expo-status-bar";
-import Tag from "@/components/TagList";
 import { meals } from "@/constants/meals";
 import TagList from "@/components/TagList/TagList";
 import MealList from "@/components/MealList";
+import { tags } from "@/constants/tags";
 
 export function compare<T>(
   a: T | undefined,
@@ -78,6 +78,8 @@ const sortOptions: SortOption[] = [
 
 export default function Meals() {
   const [query, setQuery] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   const [sortOptionIndex, setSortOptionIndex] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
 
@@ -147,8 +149,6 @@ export default function Meals() {
     flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
@@ -156,7 +156,7 @@ export default function Meals() {
         <Title>My Meals</Title>
         <SearchBarWithFilter value={query} onChangeText={setQuery} />
       </Header>
-      <TagList />
+      <TagList tags={tags} selectedTags={selectedTags} onChangeSelectedTags={setSelectedTags} />
       <MealList meals={getFilteredMeals()} searchWords={searchWords} />
       {/* <FlatList
         ref={flatListRef}

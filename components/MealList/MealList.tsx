@@ -8,9 +8,10 @@ export interface MealListProps {
   searchWords?: string[];
 }
 
+const GAP = 10;
 const FLAT_LIST_VALUES: FlatListValues = {
-  margin: 10,
-  gap: 10,
+  margin: GAP,
+  gap: GAP,
   numColumns: 2,
 };
 
