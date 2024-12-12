@@ -1,0 +1,1 @@
+export { default, MealListProps } from "./MealList";

@@ -23,6 +23,7 @@ import { StatusBar } from "expo-status-bar";
 import Tag from "@/components/TagList";
 import { meals } from "@/constants/meals";
 import TagList from "@/components/TagList/TagList";
+import MealList from "@/components/MealList";
 
 export function compare<T>(
   a: T | undefined,
@@ -80,20 +81,20 @@ export default function Meals() {
   const [sortOptionIndex, setSortOptionIndex] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
 
-  const getSearchWords = () => query.split(" ").filter((word) => word.length > 0);
+  const searchWords = useMemo(() => query.split(" ").filter((word) => word.length > 0), [query]);
 
   const getFilteredMeals = () => {
     return meals
       .filter(
         (item) =>
-          getSearchWords().every(
+          searchWords.every(
             (word) => contains(item.title, word) || contains(item.ingredients.join(","), word)
             // contains(item.tags.join(","), word)
           ) && selectedTags.every((tag) => item.tags.includes(tag))
       )
       .sort((a, b) => {
-        const aTitle = getSearchWords().some((word) => contains(a.title, word) || contains(a.tags.join(","), word));
-        const bTitle = getSearchWords().some((word) => contains(b.title, word) || contains(b.tags.join(","), word));
+        const aTitle = searchWords.some((word) => contains(a.title, word) || contains(a.tags.join(","), word));
+        const bTitle = searchWords.some((word) => contains(b.title, word) || contains(b.tags.join(","), word));
 
         if (true) {
           return sortOptions[sortOptionIndex].compare(a, b, isAscending);
@@ -114,7 +115,7 @@ export default function Meals() {
 
   const renderMeal = ({ item }: { item: Meal }) => {
     return (
-      <MealCard meal={item} searchWords={getSearchWords()} flatListValues={{ gap: 10, margin: 10, numColumns: 2 }} />
+      <MealCard meal={item} searchWords={searchWords} flatListValues={{ gap: 10, margin: 10, numColumns: 2 }} />
     );
   };
 
@@ -146,68 +147,7 @@ export default function Meals() {
     flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
-  const isTagSelected = (tag: string) => {
-    return selectedTags.includes(tag);
-  };
-
-  const getFilterTags = () => {
-    return tags.sort((a, b) => a.title.localeCompare(b.title));
-  };
-
-  const tags = [
-    {
-      emoji: "🍕",
-      title: "Pizza",
-      isSelected: false,
-    },
-    {
-      emoji: "🍝",
-      title: "Pasta",
-      isSelected: false,
-    },
-    {
-      emoji: "🇮🇹",
-      title: "Italian",
-      isSelected: false,
-    },
-    {
-      title: "Dessert",
-      isSelected: false,
-    },
-    {
-      emoji: "🥕",
-      title: "Healthy",
-      isSelected: false,
-    },
-    {
-      emoji: "🍔",
-      title: "Cheat meal",
-      isSelected: false,
-    },
-    {
-      emoji: "😺",
-      title: "Garfield",
-      isSelected: false,
-    },
-    {
-      title: "Belgian",
-      isSelected: false,
-    },
-    {
-      title: "Mexican",
-      isSelected: false,
-    },
-  ];
-
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-  const handleTagPress = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -216,23 +156,9 @@ export default function Meals() {
         <Title>My Meals</Title>
         <SearchBarWithFilter value={query} onChangeText={setQuery} />
       </Header>
-      {/* <View>
-        <FlatList
-          data={getFilterTags()}
-          renderItem={({ item }) => (
-            <Tag
-              emoji={item.emoji}
-              title={item.title}
-              selected={isTagSelected(item.title)}
-              onPress={() => handleTagPress(item.title)}
-            />
-          )}
-          horizontal
-          contentContainerStyle={{ gap: 10, marginVertical: 10, paddingHorizontal: 10 }}
-        />
-      </View> */}
       <TagList />
-      <FlatList
+      <MealList meals={getFilteredMeals()} searchWords={searchWords} />
+      {/* <FlatList
         ref={flatListRef}
         data={getFilteredMeals()}
         renderItem={renderMeal}
@@ -241,7 +167,7 @@ export default function Meals() {
         scrollEventThrottle={16}
         numColumns={2}
         columnWrapperStyle={{ margin: 10, gap: 10 }}
-      />
+      /> */}
       <Animated.View style={{ transform: [{ translateY: arrowOpacity }] }}>
         <TouchableOpacity onPress={scrollToTop} style={styles.arrowContainer}>
           <Icon name="up" size={30} color={TOP_COLOR} />

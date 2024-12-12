@@ -11,7 +11,7 @@ import MealTitle from "./MealTitle";
 import MealFooter from "./MealFooter";
 import { colors } from "@/constants/colors";
 
-interface FlatListValues {
+export interface FlatListValues {
   margin?: number;
   gap?: number;
   numColumns?: number;
