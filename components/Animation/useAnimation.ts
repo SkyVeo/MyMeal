@@ -10,7 +10,7 @@ export interface AnimationConfig {
 }
 
 export const useAnimation = (initialValue: number = 0) => {
-    // const animatedValue = useAnimatedValue(initialValue);
+    // TODO const animatedValue = useAnimatedValue(initialValue);
     const animatedValue = useRef(new Animated.Value(initialValue)).current;
 
     const animation = (config: AnimationConfig = {}) => {
