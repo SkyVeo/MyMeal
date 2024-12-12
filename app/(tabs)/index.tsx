@@ -20,9 +20,9 @@ import { globalStyles } from "@/constants/styles";
 import SearchBarWithFilter from "@/components/Header/SearchBarWithFilter";
 import Title from "@/components/Header/Title";
 import { StatusBar } from "expo-status-bar";
-import Tag from "@/components/Tag";
+import Tag from "@/components/TagList";
 import { meals } from "@/constants/meals";
-import TagList from "@/components/Tag/TagList";
+import TagList from "@/components/TagList/TagList";
 
 export function compare<T>(
   a: T | undefined,
