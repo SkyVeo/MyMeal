@@ -8,7 +8,7 @@ import EmptyState from "@/components/EmptyState";
 import Icon from "@/components/Icon";
 // import Header from "@/components/Header";
 import HighlightText from "@/components/HighlightText";
-import { Meal } from "@/classes/meal";
+import { Meal } from "@/classes/Meal";
 import PopupMenu from "@/components/PopupMenu";
 import SortMenu from "@/components/SortMenu";
 import MealCard from "@/components/MealCard/MealCard";
@@ -80,10 +80,11 @@ export default function Meals() {
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  const searchWords = useMemo(() => query.split(" ").filter((word) => word.length > 0), [query]);
+
   const [sortOptionIndex, setSortOptionIndex] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
 
-  const searchWords = useMemo(() => query.split(" ").filter((word) => word.length > 0), [query]);
 
   const getFilteredMeals = () => {
     return meals
@@ -91,24 +92,9 @@ export default function Meals() {
         (item) =>
           searchWords.every(
             (word) => contains(item.title, word) || contains(item.ingredients.join(","), word)
-            // contains(item.tags.join(","), word)
           ) && selectedTags.every((tag) => item.tags.includes(tag))
       )
-      .sort((a, b) => {
-        const aTitle = searchWords.some((word) => contains(a.title, word) || contains(a.tags.join(","), word));
-        const bTitle = searchWords.some((word) => contains(b.title, word) || contains(b.tags.join(","), word));
-
-        if (true) {
-          return sortOptions[sortOptionIndex].compare(a, b, isAscending);
-        }
-        if (aTitle) {
-          return -1;
-        }
-        if (bTitle) {
-          return 1;
-        }
-        return sortOptions[sortOptionIndex].compare(a, b, isAscending);
-      });
+      .sort((a, b) => sortOptions[sortOptionIndex].compare(a, b, isAscending));
   };
 
   const contains = (text: string, searchString: string) => {
@@ -156,6 +142,7 @@ export default function Meals() {
         <Title>My Meals</Title>
         <SearchBarWithFilter value={query} onChangeText={setQuery} />
       </Header>
+      {/* // ? plural */}
       <TagList tags={tags} selectedTags={selectedTags} onChangeSelectedTags={setSelectedTags} />
       <MealList meals={getFilteredMeals()} searchWords={searchWords} />
       {/* <FlatList

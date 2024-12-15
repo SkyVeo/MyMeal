@@ -1,6 +1,6 @@
 import { StyleSheet, Pressable } from "react-native";
 
-import { Meal } from "@/classes/meal";
+import { Meal } from "@/classes/Meal";
 import MealBackground from "./MealBackground";
 import { useMealFavorite } from "./MealCard.hooks";
 import MealLegend from "./MealLegend";

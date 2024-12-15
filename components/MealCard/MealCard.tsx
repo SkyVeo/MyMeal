@@ -1,6 +1,6 @@
 import { StyleSheet, Pressable, Image, View, Dimensions } from "react-native";
 
-import { Meal } from "@/classes/meal";
+import { Meal } from "@/classes/Meal";
 import { useMealFavorite } from "./MealCard.hooks";
 import MealIngredients from "./MealIngredients";
 import MealDuration from "./MealDuration";

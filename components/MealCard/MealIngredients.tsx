@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Meal } from "@/classes/meal";
+import { Meal } from "@/classes/Meal";
 import HighlightText from "../HighlightText";
 import { globalStyles } from "@/constants/styles";
 import { colors } from "@/constants/colors";
@@ -15,8 +15,9 @@ const MealIngredients = ({ meal, searchWords }: MealIngredientsProps) => {
     <HighlightText
       textStyle={styles.ingredients}
       text={meal.ingredientsToString()}
-      searchWords={searchWords}
-      ignoreTextSpaces
+      searchValue={searchWords}
+      allowSpacesBetweenCharacters
+      ignoreAccents
     />
   );
 };

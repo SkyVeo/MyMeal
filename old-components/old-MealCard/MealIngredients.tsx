@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 
-import { Meal } from "@/classes/meal";
+import { Meal } from "@/classes/Meal";
 import HighlightText from "../../components/HighlightText";
 import { globalStyles } from "@/constants/styles";
 

@@ -3,7 +3,7 @@ import { StyleSheet, Text } from "react-native";
 import Scale from "../Animation/Scale";
 import { colors } from "@/constants/colors";
 import { globalStyles } from "@/constants/styles";
-import { Tag } from "@/classes/tag";
+import { Tag } from "@/classes/Tag";
 
 export interface TagCardProps {
   tag: Tag;

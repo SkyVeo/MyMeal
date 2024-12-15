@@ -9,7 +9,7 @@ export interface MealTitleProps {
 }
 
 const MealTitle = ({ title, searchWords }: MealTitleProps) => {
-  return <HighlightText textStyle={styles.title} text={title} searchWords={searchWords} ignoreTextSpaces />;
+  return <HighlightText textStyle={styles.title} text={title} searchValue={searchWords} allowSpacesBetweenCharacters ignoreAccents />;
 };
 
 const styles = StyleSheet.create({

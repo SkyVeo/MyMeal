@@ -1,39 +1,55 @@
+import { RegExpBuilder } from "@/classes/RegExpBuilder";
 import { useMemo } from "react";
 
-const escapeRegExp = (text: string) => {
-    return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+export type SearchValue = string | RegExp | string[];
+
+const createRegex = (searchValue: SearchValue, allowSpacesBetweenCharacters: boolean, caseSensitive: boolean) => {
+    if (searchValue instanceof RegExp) {
+        return searchValue;
+    }
+    const builder = new RegExpBuilder(...(Array.isArray(searchValue) ? searchValue : [searchValue])).escape();
+    if (allowSpacesBetweenCharacters) {
+        builder.allowSpacesBetweenCharacters();
+    }
+    return builder.build(caseSensitive ? "g" : "gi");
 };
 
-const createRegexPattern = (searchWords: string[], ignoreTextSpaces: boolean) => {
-    const processWord = (word: string) => {
-        if (ignoreTextSpaces && word.length > 1) {
-            return `${escapeRegExp(word[0])}${word
-                .slice(1)
-                .split("")
-                .map((char) => `\\s*${escapeRegExp(char)}`)
-                .join("")}`;
+const getSegments = (text: string, regex: RegExp, ignoreAccents: boolean) => {
+    const textToMatch = ignoreAccents ? RegExpBuilder.removeAccents(text) : text;
+    const segments = [];
+    let lastIndex = 0;
+
+    for (const match of textToMatch.matchAll(regex)) {
+        const start = match.index;
+        const end = start + match[0].length;
+
+        if (start > lastIndex) {
+            segments.push({ text: text.slice(lastIndex, start), highlight: false });
         }
-        return escapeRegExp(word);
-    };
-    return `(${searchWords.map(processWord).join("|")})`;
+        segments.push({ text: text.slice(start, end), highlight: true });
+        lastIndex = end;
+    }
+
+    if (lastIndex < text.length) {
+        segments.push({ text: text.slice(lastIndex), highlight: false });
+    }
+
+    return segments;
 };
 
 export const useHighlightText = (
-    text: string,
-    searchWords: string[],
-    ignoreTextSpaces: boolean,
-    caseSensitive: boolean
+    text: string = "",
+    searchValue: SearchValue = [],
+    allowSpacesBetweenCharacters: boolean = false,
+    caseSensitive: boolean = false,
+    ignoreAccents: boolean = false
 ) => {
-    if (!searchWords.length) {
-        return { textSegments: [text], highlightRegex: null };
-    }
-
-    // TODO try with string
     const highlightRegex = useMemo(
-        () => new RegExp(createRegexPattern(searchWords, ignoreTextSpaces), caseSensitive ? "g" : "gi"),
-        [searchWords, ignoreTextSpaces, caseSensitive]
+        () => createRegex(searchValue, allowSpacesBetweenCharacters, caseSensitive),
+        [searchValue, caseSensitive]
     );
-    const textSegments = useMemo(() => text.split(highlightRegex), [text, highlightRegex]);
+
+    const textSegments = useMemo(() => getSegments(text, highlightRegex, ignoreAccents), [text, highlightRegex]);
 
     return { textSegments, highlightRegex };
 };

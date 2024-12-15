@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { Meal } from "@/classes/meal";
+import { Meal } from "@/classes/Meal";
 import MealCard, { FlatListValues } from "../MealCard";
 
 export interface MealListProps {

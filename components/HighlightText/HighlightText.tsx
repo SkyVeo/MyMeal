@@ -1,35 +1,35 @@
 import { Text, StyleSheet, StyleProp, TextStyle, TextProps } from "react-native";
-import { useHighlightText } from "./HighlightText.hooks";
+
+import { SearchValue, useHighlightText } from "./HighlightText.hooks";
 import { colors } from "@/constants/colors";
 
 export interface HighlightTextProps extends TextProps {
   textStyle?: StyleProp<TextStyle>;
   highlightStyle?: StyleProp<TextStyle>;
   text?: string;
-  searchWords?: string[];
-  ignoreTextSpaces?: boolean;
+  searchValue?: SearchValue;
+  allowSpacesBetweenCharacters?: boolean;
   caseSensitive?: boolean;
+  ignoreAccents?: boolean;
 }
 
 const HighlightText = ({
   textStyle,
   highlightStyle,
-  text = "",
-  searchWords = [],
-  ignoreTextSpaces = false,
-  caseSensitive = false,
+  text,
+  searchValue,
+  allowSpacesBetweenCharacters,
+  caseSensitive,
+  ignoreAccents,
   ...props
 }: HighlightTextProps) => {
-  const { textSegments, highlightRegex } = useHighlightText(text, searchWords, ignoreTextSpaces, caseSensitive);
-
-  const getTextStyle = (segment: string) =>
-    highlightRegex && highlightRegex.test(segment) ? [styles.highlight, highlightStyle] : undefined;
+  const { textSegments } = useHighlightText(text, searchValue, allowSpacesBetweenCharacters, caseSensitive, ignoreAccents);
 
   return (
     <Text style={textStyle} {...props}>
-      {textSegments.map((segment: string, index: number) => (
-        <Text key={index} style={getTextStyle(segment)}>
-          {segment}
+      {textSegments.map(({ text, highlight }, index) => (
+        <Text key={index} style={highlight ? [styles.highlight, highlightStyle] : undefined}>
+          {text}
         </Text>
       ))}
     </Text>

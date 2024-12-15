@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, View } from "react-native";
 
 import TagCard from "./TagCard";
-import { Tag } from "@/classes/tag";
+import { Tag } from "@/classes/Tag";
 import { useSortedTags, useTagSelection } from "./TagList.hooks";
 
 export interface TagListProps {

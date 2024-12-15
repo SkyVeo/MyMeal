@@ -1,4 +1,4 @@
-import { Meal } from "@/classes/meal";
+import { Meal } from "@/classes/Meal";
 import { images } from "./images";
 
 export const meals: Meal[] = [

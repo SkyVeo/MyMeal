@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { Tag } from "@/classes/tag";
+import { Tag } from "@/classes/Tag";
 import { compare } from "@/app/(tabs)";
 
 export const useSortedTags = (tags: Tag[] = [], ascending: boolean = true) => {
@@ -13,7 +13,9 @@ export const useSortedTags = (tags: Tag[] = [], ascending: boolean = true) => {
 };
 
 export const useTagSelection = (selectedTags: string[] = [], onChangeSelectedTags?: (tags: string[]) => void) => {
-    const isTagSelected = (tag: Tag) => selectedTags.includes(tag.title);
+    const isTagSelected = (tag: Tag) => {
+        return selectedTags.includes(tag.title);
+    };
 
     const handleTagPress = (tag: Tag) => {
         if (isTagSelected(tag)) {

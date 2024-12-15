@@ -1,4 +1,4 @@
-import { Tag } from "@/classes/tag";
+import { Tag } from "@/classes/Tag";
 
 export const tags: Tag[] = [
     new Tag("Pizza", "🍕"),
