@@ -1,35 +1,37 @@
 import { Text, StyleSheet, StyleProp, TextStyle, TextProps } from "react-native";
+import { findAll } from "highlight-words-core";
 
-import { SearchValue, useHighlightText } from "./HighlightText.hooks";
 import { colors } from "@/constants/colors";
+import { useMemo } from "react";
+import { useHighlightText } from "./HighlightText.hooks";
 
 export interface HighlightTextProps extends TextProps {
   textStyle?: StyleProp<TextStyle>;
   highlightStyle?: StyleProp<TextStyle>;
-  text?: string;
-  searchValue?: SearchValue;
-  allowSpacesBetweenCharacters?: boolean;
+  textToHighlight?: string;
+  searchWords?: [];
   caseSensitive?: boolean;
-  ignoreAccents?: boolean;
+  autoEscape?: boolean;
+  sanitize?: (text: string) => string;
 }
 
 const HighlightText = ({
   textStyle,
   highlightStyle,
-  text,
-  searchValue,
-  allowSpacesBetweenCharacters,
+  textToHighlight = "",
+  searchWords,
   caseSensitive,
-  ignoreAccents,
+  autoEscape,
+  sanitize,
   ...props
 }: HighlightTextProps) => {
-  const { textSegments } = useHighlightText(text, searchValue, allowSpacesBetweenCharacters, caseSensitive, ignoreAccents);
+  const { chunks } = useHighlightText(textToHighlight, searchWords, caseSensitive, autoEscape, sanitize);
 
   return (
     <Text style={textStyle} {...props}>
-      {textSegments.map(({ text, highlight }, index) => (
+      {chunks.map(({ start, end, highlight }, index) => (
         <Text key={index} style={highlight ? [styles.highlight, highlightStyle] : undefined}>
-          {text}
+          {textToHighlight.slice(start, end)}
         </Text>
       ))}
     </Text>

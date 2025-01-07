@@ -6,4 +6,6 @@ export const images = {
     hamburger: require("@/assets/images/hamburger.jpg"),
     sandwich: require("@/assets/images/sandwich.jpg"),
     default: require("@/assets/images/mix-and-match-meal-prep11.jpg"),
+    default1: require("@/assets/images/default1.png"),
+    default2: require("@/assets/images/default2.png"),
 };

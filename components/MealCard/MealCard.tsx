@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, Image, View, Dimensions } from "react-native";
+import { StyleSheet, Pressable, View, Dimensions } from "react-native";
 
 import { Meal } from "@/classes/Meal";
 import { useMealFavorite } from "./MealCard.hooks";
@@ -10,41 +10,28 @@ import MealLegend from "./MealLegend";
 import MealTitle from "./MealTitle";
 import MealFooter from "./MealFooter";
 import { colors } from "@/constants/colors";
-
-export interface FlatListValues {
-  margin?: number;
-  gap?: number;
-  numColumns?: number;
-}
+import { HighlightTextProps } from "../HighlightText";
+import { memo } from "react";
+import Icon from "../Icon";
+import { Image } from "expo-image";
 
 export interface MealCardProps {
   meal: Meal;
-  searchWords?: string[];
-  flatListValues?: FlatListValues;
+  searchWords?: HighlightTextProps["searchWords"];
+  width?: number;
 }
 
+const FAVORITE_ICON_GAP = 5;
 const BORDER_RADIUS = 15;
-const WIDTH = Dimensions.get("window").width;
 
-const getImageSize = ({ margin = 0, gap = 0, numColumns = 1 }: FlatListValues) => {
-  const margins = 2 * margin;
-  const gaps = (numColumns - 1) * gap;
-  const imageSize = (WIDTH - margins - gaps) / numColumns;
-
-  return imageSize;
-};
-
-const MealCard = ({ meal, searchWords = [], flatListValues = {} }: MealCardProps) => {
-  const imageSize = getImageSize(flatListValues);
-  const { isFavorite, handleToggleFavorite } = useMealFavorite(meal);
-
+const MealCard = memo(({ meal, searchWords = [], width }: MealCardProps) => {
   const handlePress = () => {
     console.log(`Pressed ${meal.title}`);
   };
 
   return (
-    <Pressable style={{ ...styles.container, maxWidth: imageSize }} onPress={handlePress}>
-      <Image style={{ ...styles.image, height: imageSize }} source={meal.image} />
+    <Pressable style={{ ...styles.container, width }} onPress={handlePress}>
+      <Image style={styles.image} source={meal.image} />
 
       <MealLegend>
         <View>
@@ -52,27 +39,35 @@ const MealCard = ({ meal, searchWords = [], flatListValues = {} }: MealCardProps
           <MealIngredients meal={meal} searchWords={searchWords} />
         </View>
 
-        <MealFooter>
-          {meal.duration !== undefined && <MealDuration duration={meal.duration} />}
-          <FavoriteButton favorite={isFavorite} onPress={handleToggleFavorite} />
-        </MealFooter>
+        {/* <MealFooter> */}
+        {meal.duration !== undefined && <MealDuration duration={meal.duration} />}
+        {/* <FavoriteButton favorite={isFavorite} onPress={handleToggleFavorite} /> */}
+        {/* </MealFooter> */}
       </MealLegend>
+      {/* // TODO think about where to put the favorite icon */}
+      {meal.isFavorite && (
+        <Icon style={styles.favoriteIcon} name="star" size={24} color="#FFD700" />
+      )}
     </Pressable>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.shadow,
-    flex: 1,
     backgroundColor: colors.light.background,
     borderRadius: BORDER_RADIUS,
   },
   image: {
     width: "100%",
-    resizeMode: "cover",
+    aspectRatio: 1,
     borderTopLeftRadius: BORDER_RADIUS,
     borderTopRightRadius: BORDER_RADIUS,
+  },
+  favoriteIcon: {
+    position: "absolute",
+    top: FAVORITE_ICON_GAP,
+    left: FAVORITE_ICON_GAP,
   },
 });
 

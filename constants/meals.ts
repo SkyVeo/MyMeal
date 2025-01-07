@@ -7,6 +7,7 @@ export const meals: Meal[] = [
       .addCreationDate("2021-01-01")
       .addTags("Pizza", "Italian")
       .addCookingTime(15)
+      .addFavorite()
       .addImage(images.pizza),
     new Meal("Spaghetti carbonara")
       .addIngredients("Spaghetti", "Egg", "Guanciale", "Pecorino")
@@ -43,6 +44,7 @@ export const meals: Meal[] = [
       .addCreationDate("2021-01-07")
       .addTags("Cheat meal")
       .addPrepTime(10)
+      .addFavorite()
       .addCookingTime(10)
       .addImage(images.hamburger),
     new Meal("Hot dog")
@@ -61,6 +63,7 @@ export const meals: Meal[] = [
       .addCreationDate("2021-01-10")
       .addTags("Healthy")
       .addPrepTime(10)
+      .addFavorite()
       .addCookingTime(0),
     new Meal("Pasta al pesto")
       .addIngredients("Pasta", "Basil", "Pine nuts", "Parmesan")
@@ -81,6 +84,7 @@ export const meals: Meal[] = [
     new Meal("Zuppa di ceci")
       .addIngredients("Chickpeas", "Tomato", "Bread", "Oil")
       .addCreationDate("2021-01-14")
+      .addFavorite()
       .addTags("Soup", "Italian"),
     new Meal("* \\ + \\d \\s")
       .addIngredients("* \\ + \\d", "Tomato", "Bread", "Oil")

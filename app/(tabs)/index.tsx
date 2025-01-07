@@ -1,4 +1,12 @@
-import { View, Text, FlatList, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -24,6 +32,7 @@ import { meals } from "@/constants/meals";
 import TagList from "@/components/TagList/TagList";
 import MealList from "@/components/MealList";
 import { tags } from "@/constants/tags";
+import { RegExpBuilder } from "@/classes/RegExpBuilder";
 
 export function compare<T>(
   a: T | undefined,
@@ -66,13 +75,18 @@ const sortOptions: SortOption[] = [
   {
     label: "Creation date",
     compare: (a: Meal, b: Meal, isAscending: boolean) =>
-      compare(a.creationDate, b.creationDate, (a, b) => a.toISOString().localeCompare(b.toISOString()), isAscending) ||
-      tieBreaker(a, b, isAscending),
+      compare(
+        a.creationDate,
+        b.creationDate,
+        (a, b) => a.toISOString().localeCompare(b.toISOString()),
+        isAscending
+      ) || tieBreaker(a, b, isAscending),
   },
   {
     label: "Duration",
     compare: (a: Meal, b: Meal, isAscending: boolean) =>
-      compare(a.duration, b.duration, (a, b) => a - b, isAscending) || tieBreaker(a, b, isAscending),
+      compare(a.duration, b.duration, (a, b) => a - b, isAscending) ||
+      tieBreaker(a, b, isAscending),
   },
 ];
 
@@ -80,30 +94,48 @@ export default function Meals() {
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const searchWords = useMemo(() => query.split(" ").filter((word) => word.length > 0), [query]);
+  const { searchWords, highlightRegex } = useMemo(() => {
+    const searchWords = RegExpBuilder.removeAccents(query)
+      .split(" ")
+      .filter((word) => word.length > 0);
+    const highlightRegex = searchWords.map((word) =>
+      RegExpBuilder.allowSpacesBetweenCharacters(word)
+    );
+
+    return { searchWords, highlightRegex: highlightRegex };
+  }, [query]);
 
   const [sortOptionIndex, setSortOptionIndex] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
-
 
   const getFilteredMeals = () => {
     return meals
       .filter(
         (item) =>
+          // RegExpBuilder.removeAccents(item.title + "\n" + item.ingredients.join(", ")).match(searchRegex)
           searchWords.every(
-            (word) => contains(item.title, word) || contains(item.ingredients.join(","), word)
+            (word) =>
+              contains(item.title, word) ||
+              item.ingredients.some((ingredient) => contains(ingredient, word))
           ) && selectedTags.every((tag) => item.tags.includes(tag))
+        // && selectedTags.every((tag) => item.tags.includes(tag))
       )
       .sort((a, b) => sortOptions[sortOptionIndex].compare(a, b, isAscending));
   };
 
   const contains = (text: string, searchString: string) => {
-    return text.toLowerCase().replace(/\s+/g, "").includes(searchString.toLowerCase());
+    return RegExpBuilder.removeAccents(text)
+      .toLowerCase()
+      .replace(/\s+/g, "")
+      .includes(searchString.toLowerCase());
   };
 
   const renderMeal = ({ item }: { item: Meal }) => {
     return (
-      <MealCard meal={item} searchWords={searchWords} flatListValues={{ gap: 10, margin: 10, numColumns: 2 }} />
+      <MealCard
+        meal={item}
+        searchWords={highlightRegex}
+      />
     );
   };
 
@@ -142,9 +174,9 @@ export default function Meals() {
         <Title>My Meals</Title>
         <SearchBarWithFilter value={query} onChangeText={setQuery} />
       </Header>
-      {/* // ? plural */}
+      {/* // TODO ? plural */}
       <TagList tags={tags} selectedTags={selectedTags} onChangeSelectedTags={setSelectedTags} />
-      <MealList meals={getFilteredMeals()} searchWords={searchWords} />
+      <MealList meals={getFilteredMeals()} searchWords={highlightRegex} />
       {/* <FlatList
         ref={flatListRef}
         data={getFilteredMeals()}

@@ -1,32 +1,45 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 
 import { Meal } from "@/classes/Meal";
-import MealCard, { FlatListValues } from "../MealCard";
+import MealCard from "../MealCard";
+import { HighlightTextProps } from "../HighlightText";
+import { useCallback } from "react";
 
 export interface MealListProps {
   meals?: Meal[];
-  searchWords?: string[];
+  searchWords?: HighlightTextProps["searchWords"];
 }
 
 const GAP = 10;
-const FLAT_LIST_VALUES: FlatListValues = {
-  margin: GAP,
-  gap: GAP,
-  numColumns: 2,
-};
+const NUM_COLUMNS = 2;
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const MEAL_CARD_WIDTH = (SCREEN_WIDTH - (NUM_COLUMNS + 1) * GAP) / NUM_COLUMNS;
 
 const MealList = ({ meals, searchWords }: MealListProps) => {
-  const renderMeal = ({ item }: { item: Meal }) => {
-    return <MealCard meal={item} searchWords={searchWords} flatListValues={FLAT_LIST_VALUES} />;
-  }
+  const renderMeal = useCallback(
+    ({ item }: { item: Meal }) => {
+      return (
+        <MealCard
+          meal={item}
+          searchWords={searchWords}
+          width={MEAL_CARD_WIDTH}
+        />
+      );
+    },
+    [searchWords]
+  );
 
   return (
     <View style={styles.container}>
       <FlatList
         data={meals}
         renderItem={renderMeal}
-        numColumns={FLAT_LIST_VALUES.numColumns}
+        numColumns={NUM_COLUMNS}
         columnWrapperStyle={styles.columnWrapper}
+        maxToRenderPerBatch={4}
+        initialNumToRender={1}
+        // TODO use id
+        keyExtractor={(item) => item.title}
       />
     </View>
   );
@@ -37,8 +50,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   columnWrapper: {
-    margin: FLAT_LIST_VALUES.margin,
-    gap: FLAT_LIST_VALUES.gap,
+    margin: GAP,
+    gap: GAP,
   },
 });
 

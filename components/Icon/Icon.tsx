@@ -5,7 +5,7 @@ export interface IconProps extends IconComponentProps {
 }
 
 const Icon = ({ name, ...props }: IconProps) => {
-  return name ? icons[name](props) : null;
+  return name && icons[name] ? icons[name](props) : null;
 };
 
 export default Icon;

@@ -16,7 +16,7 @@ export class Meal {
         this.creationDate = new Date();
         this.tags = [];
         this.isFavorite = false;
-        this.image = images.default;
+        this.image = Math.random() > 0.5 ? images.default1 : images.default2;
     }
 
     get duration() {
@@ -66,6 +66,11 @@ export class Meal {
 
     addImage(image: any) {
         this.image = image;
+        return this;
+    }
+
+    addFavorite() {
+        this.isFavorite = true;
         return this;
     }
 

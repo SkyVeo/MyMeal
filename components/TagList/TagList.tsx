@@ -16,6 +16,7 @@ const TagList = ({ tags, selectedTags, onChangeSelectedTags }: TagListProps) => 
   const { sortedTags } = useSortedTags(tags);
   const { isTagSelected, handleTagPress } = useTagSelection(selectedTags, onChangeSelectedTags);
 
+  // TODO useCallback
   const renderTag = ({ item }: { item: Tag }) => (
     <TagCard tag={item} selected={isTagSelected(item)} onPress={handleTagPress} />
   );

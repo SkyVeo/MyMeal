@@ -2,14 +2,13 @@ export class RegExpBuilder {
     private values: string[];
     private escaped: boolean;
     private spacesBetweenCharactersAllowed: boolean;
-    private isGroup: boolean;
     private transformations: ((value: string) => string)[];
+    private flags?: string;
 
     constructor(...values: string[]) {
         this.values = values;
         this.escaped = false;
         this.spacesBetweenCharactersAllowed = false;
-        this.isGroup = false;
         this.transformations = [];
     }
 
@@ -35,6 +34,14 @@ export class RegExpBuilder {
 
     static escape(value: string) {
         return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    static allowSpacesBetweenCharacters(value: string) {
+        return value
+            .split("")
+            .map((char) => `${RegExpBuilder.escape(char)}\\s*`)
+            .join("")
+            .slice(0, -3);
     }
 
     private addTransformation(transformation: (value: string) => string) {
@@ -72,14 +79,20 @@ export class RegExpBuilder {
         return this;
     }
 
-    group() {
-        this.isGroup = true;
+    sanitize(transformation: (value: string) => string) {
+        return this.addTransformation(transformation);
+    }
+
+    setFlags(flags: string) {
+        this.flags = flags;
         return this;
     }
 
-    build(flags?: string) {
+    build(operator: "and" | "or" = "or") {
+        const transformations = this.transformations.slice();
+
         if (this.spacesBetweenCharactersAllowed) {
-            this.addTransformation((value: string) => {
+            transformations.push((value: string) => {
                 return value
                     .split("")
                     .map((char) => `${this.escaped ? RegExpBuilder.escape(char) : char}\\s*`)
@@ -87,18 +100,20 @@ export class RegExpBuilder {
                     .slice(0, -3);
             });
         } else if (this.escaped) {
-            this.transformations.splice(0, 0, RegExpBuilder.escape);
+            transformations.splice(0, 0, RegExpBuilder.escape);
         }
 
-        const value = this.values
-            .map((value) => {
-                for (const transformation of this.transformations) {
-                    value = transformation(value);
-                }
-                return value;
-            })
-            .join("|");
+        const transformed = this.values.map((value) => {
+            for (const transformation of transformations) {
+                value = transformation(value);
+            }
+            return value;
+        });
 
-        return new RegExp(this.isGroup ? `(${value})` : value, flags);
+        const regex =
+            operator === "and"
+                ? `(?=.*${transformed.join(")(?=.*")})`
+                : `(${transformed.join("|")})`;
+        return new RegExp(regex, this.flags);
     }
 }
