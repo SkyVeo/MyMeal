@@ -1,8 +1,6 @@
 import { Text, StyleSheet, StyleProp, TextStyle, TextProps } from "react-native";
-import { findAll } from "highlight-words-core";
 
 import { colors } from "@/constants/colors";
-import { useMemo } from "react";
 import { useHighlightText } from "./HighlightText.hooks";
 
 export interface HighlightTextProps extends TextProps {

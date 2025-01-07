@@ -83,23 +83,34 @@ export class Meal {
     }
 
     ingredientsToString(searchWords?: string[]) {
+        const ingredientsCountToString = (ingredientsCount: number) => {
+            return `${ingredientsCount} ingredient${ingredientsCount > 1 ? "s" : ""}`;
+        }
+
         if (!searchWords) {
             return this.ingredients.join(", ");
         }
 
-        const matches = this.ingredients.filter((ingredient) =>
-            searchWords.some((word) => ingredient.toLowerCase().replace(/\s+/g, "").includes(word.toLowerCase()))
-        );
-
-        if (matches.length === 0) {
+        if (searchWords.length === 0) {
             return "";
         }
 
-        const unmatched = this.ingredients.filter((ingredient) => !matches.includes(ingredient));
-        while (matches.length < 3 && unmatched.length > 0) {
-            matches.push(unmatched.shift()!);
+        const searchWordsRegex = new RegExp(searchWords.join("|"), "i");
+        const matched = [];
+        let unmatchedCount = 0;
+
+        for (const ingredient of this.ingredients) {
+            if (searchWordsRegex.test(ingredient)) {
+                matched.push(ingredient);
+            } else {
+                unmatchedCount++;
+            }
         }
 
-        return `${matches.join(", ")}${unmatched.length > 0 ? `... +${unmatched.length}` : ""}`;
+        if (matched.length === 0) {
+            return "";
+        }
+
+        return `: ${matched.join(", ")}${unmatchedCount > 0 ? "..." : ""}`;
     }
 }

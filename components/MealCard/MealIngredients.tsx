@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
+import React from "react";
 
 import { Meal } from "@/classes/Meal";
 import HighlightText, { HighlightTextProps } from "../HighlightText";
@@ -12,14 +13,17 @@ export interface MealIngredientsProps {
 }
 
 const MealIngredients = ({ meal, searchWords }: MealIngredientsProps) => {
+  const ingredientsCountText = `${meal.ingredients.length} ingredient${meal.ingredients.length > 1 ? "s" : ""}`;
+
   return (
-    <HighlightText
-      textStyle={styles.ingredients}
-      textToHighlight={meal.ingredientsToString()}
-      searchWords={searchWords}
-      sanitize={RegExpBuilder.removeAccents}
-      numberOfLines={2}
-    />
+    <Text style={styles.ingredients}>
+      {ingredientsCountText}
+      <HighlightText
+        textToHighlight={meal.ingredientsToString(searchWords)}
+        searchWords={searchWords}
+        sanitize={RegExpBuilder.removeAccents}
+      />
+    </Text>
   );
 };
 
