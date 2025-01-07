@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import TagCard from "./TagCard";
 import { Tag } from "@/classes/Tag";
 import { useSortedTags, useTagSelection } from "./TagList.hooks";
+import { useCallback } from "react";
 
 export interface TagListProps {
   tags?: Tag[];
@@ -16,9 +17,9 @@ const TagList = ({ tags, selectedTags, onChangeSelectedTags }: TagListProps) => 
   const { sortedTags } = useSortedTags(tags);
   const { isTagSelected, handleTagPress } = useTagSelection(selectedTags, onChangeSelectedTags);
 
-  // TODO useCallback
-  const renderTag = ({ item }: { item: Tag }) => (
-    <TagCard tag={item} selected={isTagSelected(item)} onPress={handleTagPress} />
+  const renderTag = useCallback(
+    ({ item }: { item: Tag }) => <TagCard tag={item} selected={isTagSelected(item)} onPress={handleTagPress} />,
+    [selectedTags]
   );
 
   return (

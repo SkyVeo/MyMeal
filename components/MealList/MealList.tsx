@@ -17,15 +17,7 @@ const MEAL_CARD_WIDTH = (SCREEN_WIDTH - (NUM_COLUMNS + 1) * GAP) / NUM_COLUMNS;
 
 const MealList = ({ meals, searchWords }: MealListProps) => {
   const renderMeal = useCallback(
-    ({ item }: { item: Meal }) => {
-      return (
-        <MealCard
-          meal={item}
-          searchWords={searchWords}
-          width={MEAL_CARD_WIDTH}
-        />
-      );
-    },
+    ({ item }: { item: Meal }) => <MealCard meal={item} searchWords={searchWords} width={MEAL_CARD_WIDTH} />,
     [searchWords]
   );
 

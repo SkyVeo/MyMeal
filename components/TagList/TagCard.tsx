@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { StyleSheet, Text } from "react-native";
 
 import Scale from "../Animation/Scale";
@@ -11,7 +12,7 @@ export interface TagCardProps {
   onPress?: (tag: Tag) => void;
 }
 
-const TagCard = ({ tag, selected = false, onPress }: TagCardProps) => {
+const TagCard = memo(({ tag, selected = false, onPress }: TagCardProps) => {
   const backgroundColor = selected ? colors.light.backgroundTertiary : colors.light.highlight;
 
   return (
@@ -24,7 +25,7 @@ const TagCard = ({ tag, selected = false, onPress }: TagCardProps) => {
       <Text style={styles.text}>{tag.toString()}</Text>
     </Scale>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
