@@ -9,7 +9,7 @@ export interface HighlightTextProps extends TextProps {
   textStyle?: StyleProp<TextStyle>;
   highlightStyle?: StyleProp<TextStyle>;
   textToHighlight?: string;
-  searchWords?: [];
+  searchWords?: string[];
   caseSensitive?: boolean;
   autoEscape?: boolean;
   sanitize?: (text: string) => string;
