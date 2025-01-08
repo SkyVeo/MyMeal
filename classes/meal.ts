@@ -83,14 +83,9 @@ export class Meal {
     }
 
     ingredientsToString(searchWords?: string[]) {
-        const ingredientsCountToString = (ingredientsCount: number) => {
-            return `${ingredientsCount} ingredient${ingredientsCount > 1 ? "s" : ""}`;
-        }
-
         if (!searchWords) {
             return this.ingredients.join(", ");
         }
-
         if (searchWords.length === 0) {
             return "";
         }

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 import HighlightText, { HighlightTextProps } from "../HighlightText";
 import { globalStyles } from "@/constants/styles";
-import { RegExpBuilder } from "@/classes/RegExpBuilder";
+import { removeAccents } from "@/utils/formatText";
 
 export interface MealTitleProps {
   title?: string;
@@ -15,7 +15,7 @@ const MealTitle = ({ title, searchWords }: MealTitleProps) => {
       textStyle={styles.title}
       textToHighlight={title}
       searchWords={searchWords}
-      sanitize={RegExpBuilder.removeAccents}
+      sanitize={removeAccents}
     />
   );
 };

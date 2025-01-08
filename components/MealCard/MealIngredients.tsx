@@ -5,7 +5,7 @@ import { Meal } from "@/classes/Meal";
 import HighlightText, { HighlightTextProps } from "../HighlightText";
 import { globalStyles } from "@/constants/styles";
 import { colors } from "@/constants/colors";
-import { RegExpBuilder } from "@/classes/RegExpBuilder";
+import { removeAccents } from "@/utils/formatText";
 
 export interface MealIngredientsProps {
   meal: Meal;
@@ -21,7 +21,7 @@ const MealIngredients = ({ meal, searchWords }: MealIngredientsProps) => {
       <HighlightText
         textToHighlight={meal.ingredientsToString(searchWords)}
         searchWords={searchWords}
-        sanitize={RegExpBuilder.removeAccents}
+        sanitize={removeAccents}
       />
     </Text>
   );
