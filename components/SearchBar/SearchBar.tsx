@@ -14,8 +14,8 @@ import Icon, { IconProps } from "../Icon";
 export interface SearchBarProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
   textInputStyle?: StyleProp<TextStyle>;
-  searchIconProps?: IconProps;
-  cancelIconProps?: IconProps;
+  searchIcon?: IconProps;
+  cancelIcon?: IconProps;
   onClear?: () => void;
 }
 
@@ -24,10 +24,10 @@ const ICON_SIZE = 20;
 const SearchBar = ({
   containerStyle,
   textInputStyle,
-  searchIconProps,
+  searchIcon,
   value,
   onChangeText,
-  cancelIconProps,
+  cancelIcon,
   onClear,
   ...props
 }: SearchBarProps) => {
@@ -38,7 +38,7 @@ const SearchBar = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <Icon name="search" size={ICON_SIZE} {...searchIconProps} />
+      <Icon name="search" size={ICON_SIZE} {...searchIcon} />
       <TextInput
         style={[styles.textInput, textInputStyle]}
         value={value}
@@ -48,7 +48,7 @@ const SearchBar = ({
         {...props}
       />
       {value && <TouchableOpacity onPress={handleClear}>
-        <Icon name="cancel" size={ICON_SIZE} {...cancelIconProps} />
+        <Icon name="cancel" size={ICON_SIZE} {...cancelIcon} />
       </TouchableOpacity>}
     </View>
   );

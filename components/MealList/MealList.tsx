@@ -1,9 +1,10 @@
+import React, { useCallback } from "react";
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 
 import { Meal } from "@/classes/Meal";
 import MealCard from "../MealCard";
 import { HighlightTextProps } from "../HighlightText";
-import { useCallback } from "react";
+import { useMealList } from "./MealList.hooks";
 
 export interface MealListProps {
   meals?: Meal[];
@@ -16,6 +17,8 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const MEAL_CARD_WIDTH = (SCREEN_WIDTH - (NUM_COLUMNS + 1) * GAP) / NUM_COLUMNS;
 
 const MealList = ({ meals, searchWords }: MealListProps) => {
+  const { flatListRef } = useMealList();
+
   const renderMeal = useCallback(
     ({ item }: { item: Meal }) => <MealCard meal={item} searchWords={searchWords} width={MEAL_CARD_WIDTH} />,
     [searchWords]
@@ -24,14 +27,14 @@ const MealList = ({ meals, searchWords }: MealListProps) => {
   return (
     <View style={styles.container}>
       <FlatList
+        ref={flatListRef}
         data={meals}
         renderItem={renderMeal}
         numColumns={NUM_COLUMNS}
         columnWrapperStyle={styles.columnWrapper}
         maxToRenderPerBatch={4}
         initialNumToRender={1}
-        // TODO use id
-        keyExtractor={(item) => item.title}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );

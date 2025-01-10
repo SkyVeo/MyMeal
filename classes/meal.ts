@@ -1,16 +1,23 @@
 import { images } from "@/constants/images";
+import { removeAccents } from "@/utils/formatText";
+import { Tag } from "./Tag";
+import { tags } from "@/constants/tags";
+
+let id = 0;
 
 export class Meal {
+    id: number;
     title: string;
     ingredients: string[];
     creationDate: Date;
-    tags: string[];
+    tags: Tag[];
     prepTime?: number;
     cookingTime?: number;
     image?: any;
     isFavorite: boolean;
 
     constructor(title: string) {
+        this.id = id++;
         this.title = title;
         this.ingredients = [];
         this.creationDate = new Date();
@@ -49,8 +56,8 @@ export class Meal {
         return this;
     }
 
-    addTags(...tags: string[]) {
-        this.tags.push(...tags);
+    addTags(...newTags: string[]) {
+        this.tags.push(...tags.filter((tag) => newTags.includes(tag.title)));
         return this;
     }
 
@@ -95,7 +102,7 @@ export class Meal {
         let unmatchedCount = 0;
 
         for (const ingredient of this.ingredients) {
-            if (searchWordsRegex.test(ingredient)) {
+            if (searchWordsRegex.test(removeAccents(ingredient))) {
                 matched.push(ingredient);
             } else {
                 unmatchedCount++;
