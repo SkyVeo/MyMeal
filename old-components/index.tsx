@@ -146,7 +146,6 @@ export default function Meals() {
         <Title>My Meals</Title>
         <SearchBarWithFilter value={query} onChangeText={setQuery} />
       </Header>
-      {/* // TODO ? plural */}
       <TagList tags={tags} selectedTags={selectedTags} onChangeSelectedTags={setSelectedTags} />
       <MealList meals={getFilteredMeals()} searchWords={highlightRegex} />
       {/* <FlatList

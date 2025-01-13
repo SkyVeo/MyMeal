@@ -4,7 +4,7 @@ import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { Meal } from "@/classes/Meal";
 import MealCard from "../MealCard";
 import { HighlightTextProps } from "../HighlightText";
-import { useMealList } from "./MealList.hooks";
+import { useScrollToTopList } from "@/hooks/useScrollToTopList";
 
 export interface MealListProps {
   meals?: Meal[];
@@ -17,7 +17,7 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const MEAL_CARD_WIDTH = (SCREEN_WIDTH - (NUM_COLUMNS + 1) * GAP) / NUM_COLUMNS;
 
 const MealList = ({ meals, searchWords }: MealListProps) => {
-  const { flatListRef } = useMealList();
+  const { flatListRef } = useScrollToTopList<Meal>();
 
   const renderMeal = useCallback(
     ({ item }: { item: Meal }) => <MealCard meal={item} searchWords={searchWords} width={MEAL_CARD_WIDTH} />,
