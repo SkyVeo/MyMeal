@@ -16,12 +16,13 @@ import { useTags } from "@/hooks/useTags";
 import { useFilteredMeals } from "@/hooks/useFilteredMeals";
 import FilterModal from "@/components/Filter/FilterModal";
 import { useModal } from "@/hooks/useModal";
-import { MenuOverlay } from "@/components/PopupMenu";
+import { useSortOption } from "@/hooks/useSortOption";
 
 const Meals = () => {
   const { query, setQuery, searchWords, highlightPatterns } = useQuery();
   const { sortedTags, selectedTags, handleTagPress, resetTags } = useTags(tags);
-  const { filteredMeals } = useFilteredMeals(meals, searchWords, selectedTags);
+  const { sortOption, setSortOption, isAscending, setIsAscending } = useSortOption();
+  const { filteredMeals } = useFilteredMeals(meals, searchWords, selectedTags, sortOption, isAscending);
   const { modalVisible, openModal, closeModal } = useModal();
 
   return (
@@ -34,7 +35,9 @@ const Meals = () => {
         tags={sortedTags}
         selectedTags={selectedTags}
         onPressTag={handleTagPress}
-        onClearTags={() => resetTags()}
+        onClearTags={resetTags}
+        onPressSortOption={setSortOption}
+        onPressOrder={setIsAscending}
         onClose={closeModal}
       />
 

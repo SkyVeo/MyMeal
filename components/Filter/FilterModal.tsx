@@ -1,4 +1,4 @@
-import { Modal, ModalProps, Pressable, PressableProps, StyleSheet, Text, View } from "react-native";
+import { FlatList, Modal, ModalProps, Pressable, PressableProps, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
 import Icon from "../Icon";
@@ -7,6 +7,8 @@ import { Tag } from "@/classes/Tag";
 import { Meal } from "@/classes/Meal";
 import { pluralize } from "@/utils/formatText";
 import OpacityOverlay from "../OpacityOverlay";
+import { sortOptions } from "@/constants/sortOptions";
+import { SortOption } from "@/classes/SortOption";
 
 export interface FilterModalProps extends ModalProps {
   meals?: Meal[];
@@ -14,6 +16,8 @@ export interface FilterModalProps extends ModalProps {
   selectedTags?: Tag[];
   onPressTag?: (tag: Tag) => void;
   onClearTags?: PressableProps["onPress"];
+  onPressSortOption?: (sortOption: SortOption) => void;
+  onPressOrder?: (isAscending: boolean) => void;
   onClose?: () => void;
 }
 
@@ -24,6 +28,8 @@ const FilterModal = ({
   selectedTags,
   onPressTag,
   onClearTags,
+  onPressSortOption,
+  onPressOrder,
   onClose,
   ...props
 }: FilterModalProps) => {
@@ -41,6 +47,40 @@ const FilterModal = ({
           </Pressable>
 
           <TagList tags={tags} selectedTags={selectedTags} onPressTag={onPressTag} />
+
+          <View>
+            <FlatList
+              data={sortOptions}
+              renderItem={({ item }) => (
+                <Pressable
+                  onPress={() => {
+                    onPressSortOption?.(item);
+                  }}
+                >
+                  <Text>{item.label}</Text>
+                </Pressable>
+              )}
+              horizontal
+            />
+          </View>
+
+          <View style={{ flexDirection: "row" }}>
+            <Pressable
+              onPress={() => {
+                onPressOrder?.(true);
+              }}
+            >
+              <Text>Ascending</Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => {
+                onPressOrder?.(false);
+              }}
+            >
+              <Text>Descending</Text>
+            </Pressable>
+          </View>
 
           <Pressable onPress={onClose}>
             <Text>Show {pluralize("meal", meals ? meals.length : 0)}</Text>

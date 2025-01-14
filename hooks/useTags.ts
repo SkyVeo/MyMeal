@@ -15,9 +15,9 @@ export const useTags = (tags: Tag[], preselectedTags: Tag[] = []) => {
         }
     };
 
-    const resetTags = (selectedTags?: Tag[]) => {
-        setSelectedTags(selectedTags ?? preselectedTags);
+    const resetTags = () => {
+        setSelectedTags(preselectedTags);
     };
 
-    return { sortedTags, selectedTags, handleTagPress, resetTags };
+    return { sortedTags, selectedTags, setSelectedTags, handleTagPress, resetTags };
 };
