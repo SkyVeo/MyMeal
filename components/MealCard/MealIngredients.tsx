@@ -5,7 +5,7 @@ import { Meal } from "@/classes/Meal";
 import HighlightText, { HighlightTextProps } from "../HighlightText";
 import { globalStyles } from "@/constants/styles";
 import { colors } from "@/constants/colors";
-import { removeAccents } from "@/utils/formatText";
+import { removeAccents, pluralize } from "@/utils/formatText";
 
 export interface MealIngredientsProps {
   meal: Meal;
@@ -17,7 +17,7 @@ const MealIngredients = ({ meal, searchWords }: MealIngredientsProps) => {
 
   return (
     <Text style={styles.ingredients}>
-      {ingredientsCountText}
+      {pluralize("ingredient", meal.ingredients.length)}
       <HighlightText
         textToHighlight={meal.ingredientsToString(searchWords)}
         searchWords={searchWords}

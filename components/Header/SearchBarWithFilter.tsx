@@ -3,16 +3,17 @@ import { StyleSheet, View } from "react-native";
 import SearchBar from "../SearchBar";
 import { colors } from "@/constants/colors";
 import { globalStyles } from "@/constants/styles";
-import FilterButton from "./FilterButton";
+import FilterButton, { FilterButtonProps } from "./FilterButton";
 
 export interface SearchBarWithFilterProps {
   value?: string;
   onChangeText?: (text: string) => void;
+  onFilterPress?: FilterButtonProps["onPress"];
 }
 
 const HEIGHT = 50;
 
-const SearchBarWithFilter = ({ value, onChangeText }: SearchBarWithFilterProps) => {
+const SearchBarWithFilter = ({ value, onChangeText, onFilterPress }: SearchBarWithFilterProps) => {
   return (
     <View style={styles.container}>
       <SearchBar
@@ -28,7 +29,7 @@ const SearchBarWithFilter = ({ value, onChangeText }: SearchBarWithFilterProps) 
         cursorColor={colors.light.backgroundTertiary}
         selectionHandleColor={colors.light.backgroundTertiary}
       />
-      <FilterButton containerStyle={styles.filterButtonContainer} />
+      <FilterButton containerStyle={styles.filterButtonContainer} onPress={onFilterPress} />
     </View>
   );
 };

@@ -17,3 +17,7 @@ export function allowSpacesBetweenCharacters(value: string, shouldEscape: boolea
         .join("")
         .slice(0, -3);
 }
+
+export function pluralize(value: string, count: number, plural: string = "s") {
+    return `${count} ${value}${count > 1 ? plural : ""}`;
+}

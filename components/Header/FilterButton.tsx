@@ -1,15 +1,16 @@
-import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
+import { StyleProp, StyleSheet, TouchableOpacity, TouchableOpacityProps, ViewStyle } from "react-native";
 
 import { colors } from "@/constants/colors";
 import Icon from "../Icon";
 
 export interface FilterButtonProps {
   containerStyle?: StyleProp<ViewStyle>;
+  onPress?: TouchableOpacityProps["onPress"];
 }
 
-const FilterButton = ({ containerStyle }: FilterButtonProps) => {
+const FilterButton = ({ containerStyle, onPress }: FilterButtonProps) => {
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
       <Icon name="filter" size={20} color={colors.light.background}/>
     </TouchableOpacity>
   );

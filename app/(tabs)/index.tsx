@@ -14,19 +14,33 @@ import { tags } from "@/constants/tags";
 import { useQuery } from "@/hooks/useQuery";
 import { useTags } from "@/hooks/useTags";
 import { useFilteredMeals } from "@/hooks/useFilteredMeals";
+import FilterModal from "@/components/Filter/FilterModal";
+import { useModal } from "@/hooks/useModal";
+import { MenuOverlay } from "@/components/PopupMenu";
 
 const Meals = () => {
   const { query, setQuery, searchWords, highlightPatterns } = useQuery();
-  const { sortedTags, selectedTags, handleTagPress } = useTags(tags);
+  const { sortedTags, selectedTags, handleTagPress, resetTags } = useTags(tags);
   const { filteredMeals } = useFilteredMeals(meals, searchWords, selectedTags);
+  const { modalVisible, openModal, closeModal } = useModal();
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
 
+      <FilterModal
+        visible={modalVisible}
+        meals={filteredMeals}
+        tags={sortedTags}
+        selectedTags={selectedTags}
+        onPressTag={handleTagPress}
+        onClearTags={() => resetTags()}
+        onClose={closeModal}
+      />
+
       <Header>
         <Title>My Meals</Title>
-        <SearchBarWithFilter value={query} onChangeText={setQuery} />
+        <SearchBarWithFilter value={query} onChangeText={setQuery} onFilterPress={openModal} />
       </Header>
 
       <TagList tags={sortedTags} selectedTags={selectedTags} onPressTag={handleTagPress} />
