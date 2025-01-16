@@ -1,3 +1,4 @@
+// TODO use default for classes
 export class Tag {
     title: string;
     emoji?: string;

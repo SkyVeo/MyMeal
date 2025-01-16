@@ -26,6 +26,7 @@ export type IconKey =
   | "back"
   | "check"
   | "up"
+  | "down"
   | "favorite"
   | "favoriteBorder"
   | "clock"
@@ -45,6 +46,7 @@ export const icons: { [key in IconKey]: (props: IconComponentProps) => React.JSX
   back: (props) => <Ionicons name="chevron-back-outline" {...props} />,
   check: (props) => <AntDesign name="check" {...props} />,
   up: (props) => <Ionicons name="chevron-up-outline" {...props} />,
+  down: (props) => <Ionicons name="chevron-down-outline" {...props} />,
   favorite: (props) => <MaterialIcons name="favorite" {...props} />,
   favoriteBorder: (props) => <MaterialIcons name="favorite-border" {...props} />,
   clock: (props) => <Feather name="clock" {...props} />,

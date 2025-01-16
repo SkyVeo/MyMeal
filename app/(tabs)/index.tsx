@@ -36,7 +36,9 @@ const Meals = () => {
         selectedTags={selectedTags}
         onPressTag={handleTagPress}
         onClearTags={resetTags}
+        sortOption={sortOption}
         onPressSortOption={setSortOption}
+        isAscending={isAscending}
         onPressOrder={setIsAscending}
         onClose={closeModal}
       />
