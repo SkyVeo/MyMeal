@@ -3,12 +3,12 @@ import React from "react";
 import FilterSection from "./FilterSection";
 import ButtonList from "./ButtonList";
 
-interface FilterOrderSectionProps {
+export interface FilterOrderSectionProps {
   isAscending?: boolean;
   onPressOrder?: (isAscending: boolean) => void;
 }
 
-const FilterOrderSection = ({ isAscending, onPressOrder }: FilterOrderSectionProps) => {
+const FilterOrderSection = ({ isAscending = true, onPressOrder }: FilterOrderSectionProps) => {
   return (
     <FilterSection title="Order">
       <ButtonList

@@ -1,78 +1,65 @@
-import {
-  Modal,
-  ModalProps,
-  Pressable,
-  PressableProps,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Modal, ModalProps, Pressable, PressableProps, ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
 import Icon from "../Icon";
-import { Tag } from "@/classes/Tag";
-import { Meal } from "@/classes/Meal";
-import { pluralize } from "@/utils/formatText";
 import OpacityOverlay from "../OpacityOverlay";
-import { SortOption } from "@/classes/SortOption";
 import { globalStyles } from "@/constants/styles";
 import { colors } from "@/constants/colors";
-import FilterTagsSection from "./FIlterTagsSection";
-import FilterSortSection from "./FilterSortSection";
-import FilterOrderSection from "./FilterOrderSection";
+import FilterTagsSection, { FilterTagsSectionProps } from "./FilterTagsSection";
+import FilterSortSection, { FilterSortSectionProps } from "./FilterSortSection";
+import FilterOrderSection, { FilterOrderSectionProps } from "./FilterOrderSection";
+import FilterHeader from "./FilterHeader";
+import ApplyButton from "./ApplyButton";
+import { useTags } from "@/hooks/useTags";
 
 // TODO apply onClose
-// TODO use Props from FilterSection
-export interface FilterModalProps extends ModalProps {
-  meals?: Meal[];
-  tags?: Tag[];
-  selectedTags?: Tag[];
-  onPressTag?: (tag: Tag) => void;
+export interface FilterModalProps
+  extends ModalProps,
+    FilterTagsSectionProps,
+    FilterSortSectionProps,
+    FilterOrderSectionProps {
   onClearTags?: PressableProps["onPress"];
-  sortOption?: SortOption;
-  onPressSortOption?: (sortOption: SortOption) => void;
-  isAscending?: boolean;
-  onPressOrder?: (isAscending: boolean) => void;
   onClose?: () => void;
 }
 
 const FilterModal = ({
   visible,
-  meals,
-  tags = [],
+  tags,
   selectedTags,
   onPressTag,
   onClearTags,
   sortOption,
   onPressSortOption,
-  isAscending = true,
+  isAscending,
   onPressOrder,
   onClose,
   ...props
 }: FilterModalProps) => {
+  // const { selectedTags: newSelectedTags, setSelectedTags } = useTags(undefined, selectedTags);
+
   return (
     <>
       {visible && <OpacityOverlay />}
 
       <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose} {...props}>
         <Pressable style={{ flex: 1 }} onPress={onClose} />
+
         <View style={styles.container}>
           <ScrollView>
-            <Icon name="cancel" size={20} onPress={onClose} />
+            <FilterHeader>
+              <Text style={styles.headerText}>Selected filters ({selectedTags?.length ?? 0})</Text>
+              <Icon name="cancel" size={20} onPress={onClose} />
+            </FilterHeader>
 
-            <Pressable onPress={onClearTags}>
+            {/* <Pressable onPress={onClearTags}>
               <Text>Clear all filters</Text>
-            </Pressable>
+            </Pressable> */}
 
             <FilterTagsSection tags={tags} selectedTags={selectedTags} onPressTag={onPressTag} />
             <FilterSortSection sortOption={sortOption} onPressSortOption={onPressSortOption} />
             <FilterOrderSection isAscending={isAscending} onPressOrder={onPressOrder} />
-
-            <Pressable onPress={onClose}>
-              <Text>Show {pluralize("meal", meals ? meals.length : 0)}</Text>
-            </Pressable>
           </ScrollView>
+          <ApplyButton onPress={onClose} />
         </View>
       </Modal>
     </>
@@ -82,28 +69,12 @@ const FilterModal = ({
 const styles = StyleSheet.create({
   container: {
     height: "90%",
-    width: "100%",
     backgroundColor: colors.light.background,
+    borderRadius: 20,
   },
-  orderTitle: {
-    ...globalStyles.bold,
+  headerText: {
+    ...globalStyles.medium,
     fontSize: 16,
-  },
-  orderTitleContainer: {
-    marginTop: 5,
-    marginHorizontal: 15,
-    paddingTop: 15,
-    paddingBottom: 10,
-    borderTopWidth: 1,
-    borderColor: colors.light.tint,
-  },
-  orderContainer: {
-    flexDirection: "row",
-    paddingHorizontal: 15,
-    paddingBottom: 15,
-    paddingTop: 5,
-    gap: 10,
-    flexWrap: "wrap",
   },
 });
 

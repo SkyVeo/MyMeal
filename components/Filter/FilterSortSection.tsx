@@ -5,7 +5,7 @@ import FilterSection from "./FilterSection";
 import ButtonList from "./ButtonList";
 import { sortOptions } from "@/constants/sortOptions";
 
-interface FilterSortSectionProps {
+export interface FilterSortSectionProps {
   sortOption?: SortOption;
   onPressSortOption?: (sortOption: SortOption) => void;
 }

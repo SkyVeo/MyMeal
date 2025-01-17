@@ -18,6 +18,7 @@ import FilterModal from "@/components/Filter/FilterModal";
 import { useModal } from "@/hooks/useModal";
 import { useSortOption } from "@/hooks/useSortOption";
 
+// TODO add GAP in global constant
 const Meals = () => {
   const { query, setQuery, searchWords, highlightPatterns } = useQuery();
   const { sortedTags, selectedTags, handleTagPress, resetTags } = useTags(tags);
@@ -31,7 +32,6 @@ const Meals = () => {
 
       <FilterModal
         visible={modalVisible}
-        meals={filteredMeals}
         tags={sortedTags}
         selectedTags={selectedTags}
         onPressTag={handleTagPress}

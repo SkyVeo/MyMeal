@@ -4,6 +4,7 @@ import React from "react";
 import ExpandableMenu, { ExpandableMenuProps } from "../ExpandableMenu";
 import { colors } from "@/constants/colors";
 import { globalStyles } from "@/constants/styles";
+import sizes from "@/constants/sizes";
 
 export interface FilterSectionProps extends ExpandableMenuProps {}
 
@@ -29,7 +30,7 @@ const FilterSection = ({
 const styles = StyleSheet.create({
   orderTitleContainer: {
     marginTop: 5,
-    marginHorizontal: 15,
+    marginHorizontal: sizes.modalPadding,
     paddingTop: 15,
     paddingBottom: 10,
     borderTopWidth: 1,
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   },
   orderContainer: {
     flexDirection: "row",
-    paddingHorizontal: 15,
+    paddingHorizontal: sizes.modalPadding,
     paddingBottom: 15,
     paddingTop: 5,
     gap: 10,
