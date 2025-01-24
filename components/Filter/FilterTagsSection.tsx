@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 
 import FilterSection from "./FilterSection";
-import ButtonList from "./ButtonList";
 import { Tag } from "@/classes/Tag";
+import FilterButton from "./FilterButton";
 
 export interface FilterTagsSectionProps {
   tags?: Tag[];
@@ -12,21 +12,29 @@ export interface FilterTagsSectionProps {
 }
 
 const FilterTagsSection = ({ tags, selectedTags, onPressTag }: FilterTagsSectionProps) => {
-  return (
-    <FilterSection title="Filters" titleContainerStyle={styles.container}>
-      <ButtonList
-        data={tags}
-        titleExtractor={(tag) => tag.title}
-        focusedExtractor={(tag) => selectedTags?.includes(tag) ?? false}
-        onPress={onPressTag}
-      />
-    </FilterSection>
+  const renderItem = useCallback(
+    (tag: Tag, index: number) => {
+      return (
+        <FilterButton
+          key={index}
+          title={tag.toString()}
+          onPress={() => onPressTag?.(tag)}
+          focused={selectedTags?.includes(tag)}
+        />
+      );
+    },
+    [selectedTags, onPressTag]
   );
+
+  return <FilterSection title="Filters" titleContainerStyle={styles.container} data={tags} renderItem={renderItem} />;
 };
 
 const styles = StyleSheet.create({
   container: {
     borderTopWidth: 0,
+  },
+  wrapListContainer: {
+    gap: 10,
   },
 });
 

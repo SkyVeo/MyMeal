@@ -3,7 +3,6 @@ import { Animated, GestureResponderEvent, Pressable, PressableProps, StyleProp, 
 import { useAnimation } from "@/components/Animation/useAnimation";
 
 export interface ScaleProps extends PressableProps {
-  style?: StyleProp<ViewStyle>;
   initialScale?: number;
   scalingFactor?: number;
   duration?: number;
@@ -11,7 +10,6 @@ export interface ScaleProps extends PressableProps {
 }
 
 const Scale = ({
-  style,
   initialScale = 1,
   scalingFactor = 0.2,
   duration = 100,
@@ -35,7 +33,7 @@ const Scale = ({
   };
 
   return (
-    <Animated.View style={[style, { transform: [{ scale: scaleValue }] }]}>
+    <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
       <Pressable onPress={handleToggle} {...props}>
         {children}
       </Pressable>

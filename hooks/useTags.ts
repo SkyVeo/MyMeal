@@ -2,10 +2,14 @@ import { useMemo, useState } from "react";
 
 import { Tag } from "@/classes/Tag";
 
-export const useTags = (tags: Tag[] = [], preselectedTags: Tag[] = []) => {
-    const [selectedTags, setSelectedTags] = useState<Tag[]>(preselectedTags);
-
+export const useSortedTags = (tags: Tag[] = []) => {
     const sortedTags = useMemo(() => tags.sort((a, b) => a.title.localeCompare(b.title)), [tags]);
+
+    return { sortedTags };
+};
+
+export const useSelectedTags = (preselectedTags: Tag[] = []) => {
+    const [selectedTags, setSelectedTags] = useState<Tag[]>(preselectedTags);
 
     const handleTagPress = (tag: Tag) => {
         if (selectedTags.includes(tag)) {
@@ -19,5 +23,5 @@ export const useTags = (tags: Tag[] = [], preselectedTags: Tag[] = []) => {
         setSelectedTags(preselectedTags);
     };
 
-    return { sortedTags, selectedTags, setSelectedTags, handleTagPress, resetTags };
+    return { selectedTags, setSelectedTags, handleTagPress, resetTags };
 };

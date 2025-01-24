@@ -1,1 +1,2 @@
-export { default, ButtonProps } from "./Button";
+export { default as OpacityButton, OpacityButtonProps } from "./OpacityButton";
+export { default as ScaleButton, ScaleButtonProps } from "./ScaleButton";

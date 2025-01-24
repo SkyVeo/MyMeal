@@ -8,21 +8,21 @@ export interface ExpandableMenuProps extends PropsWithChildren {
   titleContainerStyle?: StyleProp<ViewStyle>;
   title?: string;
   titleStyle?: StyleProp<TextStyle>;
-  iconProps?: IconProps;
-  expandedIconName?: IconProps["name"];
-  collapsedIconName?: IconProps["name"];
+  expandedIconProps?: IconProps;
+  collapsedIconProps?: IconProps;
   expandableContainerStyle?: StyleProp<ViewStyle>;
   animationDuration?: number;
   renderChildrenCollapsed?: boolean;
 }
 
+const ICON_SIZE = 20;
+
 const ExpandableMenu = ({
   titleContainerStyle,
   title,
   titleStyle,
-  iconProps,
-  expandedIconName = "up",
-  collapsedIconName = "down",
+  expandedIconProps,
+  collapsedIconProps,
   expandableContainerStyle,
   animationDuration,
   children,
@@ -33,7 +33,11 @@ const ExpandableMenu = ({
     <View style={styles.container}>
       <Pressable onPress={toggleMenu} style={[styles.titleContainer, titleContainerStyle]}>
         <Text style={titleStyle}>{title}</Text>
-        <Icon name={expanded ? expandedIconName : collapsedIconName} size={20} {...iconProps} />
+        {expanded ? (
+          <Icon name="up" size={ICON_SIZE} {...expandedIconProps} />
+        ) : (
+          <Icon name="down" size={ICON_SIZE} {...collapsedIconProps} />
+        )}
       </Pressable>
 
       <Animated.View style={{ height }}>

@@ -5,30 +5,31 @@ import ExpandableMenu, { ExpandableMenuProps } from "../ExpandableMenu";
 import { colors } from "@/constants/colors";
 import { globalStyles } from "@/constants/styles";
 import sizes from "@/constants/sizes";
+import WrapList, { WrapListProps } from "../WrapList";
 
-export interface FilterSectionProps extends ExpandableMenuProps {}
+export interface FilterSectionProps<T> extends WrapListProps<T>, ExpandableMenuProps {}
 
-const FilterSection = ({
+const FilterSection = <T,>({
+  style,
+  data,
+  renderItem,
   titleContainerStyle,
   titleStyle,
-  expandableContainerStyle,
-  children,
   ...props
-}: FilterSectionProps) => {
+}: FilterSectionProps<T>) => {
   return (
     <ExpandableMenu
-      titleContainerStyle={[styles.orderTitleContainer, titleContainerStyle]}
-      titleStyle={[styles.orderTitle, titleStyle]}
-      expandableContainerStyle={[styles.orderContainer, expandableContainerStyle]}
+      titleContainerStyle={[styles.titleContainer, titleContainerStyle]}
+      titleStyle={[styles.title, titleStyle]}
       {...props}
     >
-      {children}
+      <WrapList style={[styles.wrapList, style]} data={data} renderItem={renderItem} />
     </ExpandableMenu>
   );
 };
 
 const styles = StyleSheet.create({
-  orderTitleContainer: {
+  titleContainer: {
     marginTop: 5,
     marginHorizontal: sizes.modalPadding,
     paddingTop: 15,
@@ -36,17 +37,15 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: colors.light.tint,
   },
-  orderTitle: {
+  title: {
     ...globalStyles.bold,
     fontSize: 16,
   },
-  orderContainer: {
-    flexDirection: "row",
+  wrapList: {
     paddingHorizontal: sizes.modalPadding,
     paddingBottom: 15,
     paddingTop: 5,
     gap: 10,
-    flexWrap: "wrap",
   },
 });
 

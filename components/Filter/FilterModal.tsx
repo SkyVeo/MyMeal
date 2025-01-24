@@ -1,5 +1,5 @@
-import { Modal, ModalProps, Pressable, PressableProps, ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Modal, ModalProps, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
 
 import Icon from "../Icon";
 import OpacityOverlay from "../OpacityOverlay";
@@ -10,56 +10,64 @@ import FilterSortSection, { FilterSortSectionProps } from "./FilterSortSection";
 import FilterOrderSection, { FilterOrderSectionProps } from "./FilterOrderSection";
 import FilterHeader from "./FilterHeader";
 import ApplyButton from "./ApplyButton";
-import { useTags } from "@/hooks/useTags";
+import { Tag } from "@/classes/Tag";
+import { SortOption } from "@/classes/SortOption";
+import { useFilter } from "./Filter.hooks";
+import ClearButton from "./ClearButton";
+import { sortOptions } from "@/constants/sortOptions";
 
-// TODO apply onClose
-export interface FilterModalProps
-  extends ModalProps,
-    FilterTagsSectionProps,
-    FilterSortSectionProps,
-    FilterOrderSectionProps {
-  onClearTags?: PressableProps["onPress"];
+export interface FilterModalProps extends ModalProps {
+  tags?: FilterTagsSectionProps["tags"];
+  selectedTags?: FilterTagsSectionProps["tags"];
+  sortOption?: FilterSortSectionProps["sortOption"];
+  isAscending?: FilterOrderSectionProps["isAscending"];
   onClose?: () => void;
+  onApply?: (newSelectedTags: Tag[], newSortOption: SortOption, newIsAscending: boolean) => void;
 }
 
 const FilterModal = ({
   visible,
   tags,
   selectedTags,
-  onPressTag,
-  onClearTags,
   sortOption,
-  onPressSortOption,
   isAscending,
-  onPressOrder,
   onClose,
+  onApply,
   ...props
 }: FilterModalProps) => {
-  // const { selectedTags: newSelectedTags, setSelectedTags } = useTags(undefined, selectedTags);
+  const { newSelectedTags, handleTagPress, clearTags, newSortOption, setSortOption, newIsAscending, setIsAscending } =
+    useFilter(selectedTags, sortOption, isAscending);
+
+  const handleCancel = () => {
+    onClose?.();
+  };
+
+  const handleApply = () => {
+    onApply?.(newSelectedTags, newSortOption, newIsAscending);
+    onClose?.();
+  };
 
   return (
     <>
       {visible && <OpacityOverlay />}
 
       <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose} {...props}>
-        <Pressable style={{ flex: 1 }} onPress={onClose} />
+        <Pressable style={{ flex: 1 }} onPress={handleApply} />
 
         <View style={styles.container}>
           <ScrollView>
             <FilterHeader>
-              <Text style={styles.headerText}>Selected filters ({selectedTags?.length ?? 0})</Text>
-              <Icon name="cancel" size={20} onPress={onClose} />
+              <Text style={styles.headerText}>Selected filters ({newSelectedTags?.length ?? 0})</Text>
+              <Icon name="cancel" size={20} onPress={handleCancel} />
             </FilterHeader>
 
-            {/* <Pressable onPress={onClearTags}>
-              <Text>Clear all filters</Text>
-            </Pressable> */}
+            <ClearButton selectedTags={newSelectedTags} onClear={clearTags} onPressTag={handleTagPress} />
 
-            <FilterTagsSection tags={tags} selectedTags={selectedTags} onPressTag={onPressTag} />
-            <FilterSortSection sortOption={sortOption} onPressSortOption={onPressSortOption} />
-            <FilterOrderSection isAscending={isAscending} onPressOrder={onPressOrder} />
+            <FilterTagsSection tags={tags} selectedTags={newSelectedTags} onPressTag={handleTagPress} />
+            <FilterSortSection sortOptions={sortOptions} sortOption={newSortOption} onPressSortOption={setSortOption} />
+            <FilterOrderSection isAscending={newIsAscending} onPressOrder={setIsAscending} />
           </ScrollView>
-          <ApplyButton onPress={onClose} />
+          <ApplyButton onPress={handleApply} />
         </View>
       </Modal>
     </>

@@ -12,7 +12,7 @@ import TagList from "@/components/TagList/TagList";
 import MealList from "@/components/MealList";
 import { tags } from "@/constants/tags";
 import { useQuery } from "@/hooks/useQuery";
-import { useTags } from "@/hooks/useTags";
+import { useSelectedTags, useSortedTags } from "@/hooks/useTags";
 import { useFilteredMeals } from "@/hooks/useFilteredMeals";
 import FilterModal from "@/components/Filter/FilterModal";
 import { useModal } from "@/hooks/useModal";
@@ -20,8 +20,10 @@ import { useSortOption } from "@/hooks/useSortOption";
 
 // TODO add GAP in global constant
 const Meals = () => {
+  // TODO move all hooks to a separate file
   const { query, setQuery, searchWords, highlightPatterns } = useQuery();
-  const { sortedTags, selectedTags, handleTagPress, resetTags } = useTags(tags);
+  const { sortedTags } = useSortedTags(tags);
+  const { selectedTags, setSelectedTags, handleTagPress } = useSelectedTags();
   const { sortOption, setSortOption, isAscending, setIsAscending } = useSortOption();
   const { filteredMeals } = useFilteredMeals(meals, searchWords, selectedTags, sortOption, isAscending);
   const { modalVisible, openModal, closeModal } = useModal();
@@ -34,13 +36,14 @@ const Meals = () => {
         visible={modalVisible}
         tags={sortedTags}
         selectedTags={selectedTags}
-        onPressTag={handleTagPress}
-        onClearTags={resetTags}
         sortOption={sortOption}
-        onPressSortOption={setSortOption}
         isAscending={isAscending}
-        onPressOrder={setIsAscending}
         onClose={closeModal}
+        onApply={(newSelectedTags, newSortOption, newIsAscending) => {
+          setSelectedTags(newSelectedTags);
+          setSortOption(newSortOption);
+          setIsAscending(newIsAscending);
+        }}
       />
 
       <Header>

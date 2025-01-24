@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import FilterSection from "./FilterSection";
-import ButtonList from "./ButtonList";
+import FilterButton from "./FilterButton";
 
 export interface FilterOrderSectionProps {
   isAscending?: boolean;
@@ -9,16 +9,20 @@ export interface FilterOrderSectionProps {
 }
 
 const FilterOrderSection = ({ isAscending = true, onPressOrder }: FilterOrderSectionProps) => {
-  return (
-    <FilterSection title="Order">
-      <ButtonList
-        data={[true, false]}
-        titleExtractor={(isAscending) => (isAscending ? "Ascending" : "Descending")}
-        focusedExtractor={(item) => item === isAscending}
-        onPress={onPressOrder}
+  const data = [true, false];
+
+  const renderItem = useCallback((item: boolean, index: number) => {
+    return (
+      <FilterButton 
+        key={index}
+        title={item ? "Ascending" : "Descending"} 
+        focused={item === isAscending} 
+        onPress={() => onPressOrder?.(item)}
       />
-    </FilterSection>
-  );
+    )
+  }, [isAscending, onPressOrder]);
+
+  return <FilterSection title="Order" data={data} renderItem={renderItem} />;
 };
 
 export default FilterOrderSection;

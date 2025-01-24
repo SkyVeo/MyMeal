@@ -25,3 +25,5 @@ export const sortOptions = [
             SortOption.tieBreaker(a, b, isAscending)
     ),
 ];
+
+export const defaultSortOption = sortOptions[0];

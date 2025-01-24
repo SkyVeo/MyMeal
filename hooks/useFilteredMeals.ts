@@ -4,13 +4,13 @@ import { Meal } from "@/classes/Meal";
 import { Tag } from "@/classes/Tag";
 import { removeSpaces, removeAccents } from "@/utils/formatText";
 import { SortOption } from "@/classes/SortOption";
-import { sortOptions } from "@/constants/sortOptions";
+import { defaultSortOption } from "@/constants/sortOptions";
 
 export const useFilteredMeals = (
     meals: Meal[],
     searchWords: string[],
     selectedTags: Tag[] = [],
-    sortOption: SortOption = sortOptions[0],
+    sortOption: SortOption = defaultSortOption,
     isAscending: boolean = true
 ) => {
     const contains = (text: string, searchString: string) => {
