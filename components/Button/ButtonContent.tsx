@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
-    padding: 10,
   },
 });
 

@@ -1,20 +1,19 @@
-import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 
 import { globalStyles } from "@/constants/styles";
 import sizes from "@/constants/sizes";
 import { colors } from "@/constants/colors";
+import { OpacityButton, OpacityButtonProps } from "../Button";
 
 export interface ApplyButtonProps {
-  onPress?: TouchableOpacityProps["onPress"];
+  onPress?: OpacityButtonProps["onPress"];
 }
 
 const ApplyButton = ({ onPress }: ApplyButtonProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
-        <Text style={styles.title}>Show results</Text>
-      </TouchableOpacity>
+      <OpacityButton style={styles.buttonContainer} title="Show results" titleStyle={styles.title} onPress={onPress} />
     </View>
   );
 };
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
     backgroundColor: colors.light.backgroundTertiary,
-    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 25,
     padding: 10,
   },
