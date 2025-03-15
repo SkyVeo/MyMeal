@@ -13,7 +13,7 @@ const CustomModal = ({ style, visible, onClose, children, ...props }: CustomModa
       {visible && <OpacityOverlay />}
 
       <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose} {...props}>
-        <Pressable style={styles.overlayPressable} onPress={onClose} />
+        <Pressable style={styles.overlay} onPress={onClose} />
 
         <View style={[styles.modalContainer, style]}>{children}</View>
       </Modal>
@@ -22,7 +22,7 @@ const CustomModal = ({ style, visible, onClose, children, ...props }: CustomModa
 };
 
 const styles = StyleSheet.create({
-  overlayPressable: {
+  overlay: {
     flex: 1,
   },
   modalContainer: {

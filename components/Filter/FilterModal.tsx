@@ -39,12 +39,12 @@ const FilterModal = ({ tags, selectedTags, sortOption, isAscending, onClose, onA
 
   return (
     <CustomModal style={styles.container} onClose={handleApply} onRequestClose={handleCancel} {...props}>
-      <ScrollView>
-        <FilterHeader>
-          <Text style={styles.headerText}>Selected filters ({newSelectedTags?.length ?? 0})</Text>
-          <Icon name="cancel" size={20} onPress={handleCancel} />
-        </FilterHeader>
+      <FilterHeader>
+        <Text style={styles.headerText}>Selected filters ({newSelectedTags?.length ?? 0})</Text>
+        <Icon name="cancel" size={20} onPress={handleCancel} />
+      </FilterHeader>
 
+      <ScrollView>
         <ClearButton selectedTags={newSelectedTags} onClear={clearTags} onPressTag={handleTagPress} />
 
         <FilterTagsSection tags={tags} selectedTags={newSelectedTags} onPressTag={handleTagPress} />
