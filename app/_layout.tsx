@@ -1,9 +1,13 @@
+import Loader from "@/components/Loader/Loader";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
-import { StrictMode, useEffect } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { StrictMode, Suspense, useEffect } from "react";
 
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
@@ -38,11 +42,15 @@ export default function RootLayout() {
 
   return (
     <StrictMode>
-      <Stack>
-        {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        {/* <Stack.Screen name="/search/[query]" options={{ headerShown: false }} /> */}
-      </Stack>
+      <QueryClientProvider client={queryClient}>
+        <Suspense fallback={<Loader />}>
+          <Stack>
+            {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            {/* <Stack.Screen name="/search/[query]" options={{ headerShown: false }} /> */}
+          </Stack>
+        </Suspense>
+      </QueryClientProvider>
     </StrictMode>
   );
 }

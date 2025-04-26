@@ -13,7 +13,6 @@ export const globalStyles = StyleSheet.create({
         includeFontPadding: false,
         fontFamily: "Poppins-Bold",
     },
-    // TODO modify depreacated
     shadow: {
         shadowColor: "black",
         shadowOffset: { width: 0, height: 2 },
